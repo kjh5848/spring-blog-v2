@@ -2,6 +2,8 @@ package shop.mtcoding.blog.board;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import shop.mtcoding.blog.utill.MyDateUtill;
 
 import java.sql.Timestamp;
 
@@ -17,5 +19,9 @@ public class Board {
     private String title;
     private String content;
     private Timestamp createdAt;
+
+    public String getTime() {
+        return MyDateUtill.timestampFormat(createdAt);
+    }
 
 }

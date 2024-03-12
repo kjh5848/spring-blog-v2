@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Import;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Import(BoardNativeRepository.class)
@@ -17,6 +18,34 @@ class BoardNativeRepositoryTest {
 
     @Autowired
     private BoardNativeRepository boardNativeRepository;
+
+    @Test
+    public void delete_test() {
+        int id = 1;
+
+        boardNativeRepository.delete(id);
+
+        List<Board> boardList = boardNativeRepository.findAll();
+
+        // org.assertj.core.api
+        assertThat(boardList.size()).isEqualTo(3);
+
+        }
+
+    @Test
+    public void findeById_test() {
+        int id = 1;
+
+        Board board = boardNativeRepository.findById(id);
+
+        System.out.println("findById_test/size: " + board);
+
+        // org.assertj.core.api
+        assertThat(board.getId()).isEqualTo(1);
+        assertThat(board.getUsername()).isEqualTo("ssar");
+    }
+
+
 
     @Test
     public void findeAll_test() {
@@ -29,7 +58,7 @@ class BoardNativeRepositoryTest {
         );
 
         // org.assertj.core.api
-        Assertions.assertThat(boardList.size()).isEqualTo(4);
-        Assertions.assertThat(boardList.get(2).getUsername()).isEqualTo("ssar");
+        assertThat(boardList.size()).isEqualTo(4);
+        assertThat(boardList.get(2).getUsername()).isEqualTo("ssar");
     }
 }

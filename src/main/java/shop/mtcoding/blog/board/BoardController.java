@@ -18,6 +18,13 @@ public class BoardController {
 
     private final BoardNativeRepository boardNativeRepository;
 
+
+    @PostMapping("/board/{id}/delete")
+    public String delete(@PathVariable Integer id) {
+        boardNativeRepository.deleteById(id);
+        return "redirect:/";
+    }
+
     @PostMapping("/board/save")
     public String save(String username, String title, String content) {
         boardNativeRepository.save(username, title, content);
@@ -39,7 +46,9 @@ public class BoardController {
     }
 
     @GetMapping("/board/{id}")
-    public String detail(@PathVariable Integer id) {
-        return "board/detail";
+    public String detail(@PathVariable Integer id, HttpServletRequest request) {
+        Board board = boardNativeRepository.findById(id);
+        request.setAttribute("board", board);
+        return "/board/detail";
     }
 }

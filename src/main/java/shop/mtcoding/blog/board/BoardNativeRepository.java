@@ -13,6 +13,27 @@ public class BoardNativeRepository {
     private final EntityManager em;
 
     @Transactional
+    public void deleteById(Integer id) {
+        String q = """
+                delete from board_tb where id = ?
+                """;
+        em.createNativeQuery(q, Board.class)
+                .setParameter(1, id)
+                .executeUpdate();
+    }
+
+
+    public Board findById(int id) {
+        String q = """
+                select * from board_tb where id = ?
+                """;
+        return (Board) em.createNativeQuery(q, Board.class)
+                .setParameter(1, id)
+                .getSingleResult();
+    }
+
+
+    @Transactional
     public void save(String username, String tiile, String content) {
         String q = """
                 insert into board_tb(username, title, content) values(?,?,?,now())

@@ -17,6 +17,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardNativeRepository boardNativeRepository;
+    private final BoardpersistRepository boardpersistRepository;
 
 
     @PostMapping("/board/{id}/update")
@@ -39,9 +40,8 @@ public class BoardController {
     }
 
     @PostMapping("/board/save")
-    public String save(String username, String title, String content) {
-        boardNativeRepository.save(username, title, content);
-
+    public String save(BoardRequest.SaveDTO reqDTO) {
+        boardpersistRepository.save(reqDTO.toEntity());
         return "redirect:/";
     }
 

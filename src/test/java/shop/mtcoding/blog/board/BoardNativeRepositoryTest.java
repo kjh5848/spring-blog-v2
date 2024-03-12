@@ -11,13 +11,27 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Import(BoardNativeRepository.class)
+@Import({BoardNativeRepository.class,BoardpersistRepository.class})
 @DataJpaTest
 class BoardNativeRepositoryTest {
 
 
     @Autowired
     private BoardNativeRepository boardNativeRepository;
+
+    @Autowired
+    private BoardpersistRepository boardpersistRepository;
+
+    @Test
+    public void save_test() {
+        Board board = new Board("kjh", "제목5", "내용5");
+
+        boardpersistRepository.save(board);
+        System.out.println("save_test: " + board);
+//        assertThat(board.getUsername()).isEqualTo(username);
+//        assertThat(board.getTitle()).isEqualTo(title);
+//        assertThat(board.getContent()).isEqualTo(content);
+    }
 
     @Test
     public void update_test() {

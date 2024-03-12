@@ -13,6 +13,13 @@ public class BoardNativeRepository {
     private final EntityManager em;
 
     @Transactional
+    public Board save(Board board) {
+        em.persist(board);
+        //board -> 영속객체
+        return board;
+    }
+
+    @Transactional
     public void deleteById(Integer id) {
         String q = """
                 delete from board_tb where id = ?
@@ -30,19 +37,6 @@ public class BoardNativeRepository {
         return (Board) em.createNativeQuery(q, Board.class)
                 .setParameter(1, id)
                 .getSingleResult();
-    }
-
-
-    @Transactional
-    public void save(String username, String tiile, String content) {
-        String q = """
-                insert into board_tb(username, title, content) values(?,?,?,now())
-                """;
-        em.createNativeQuery(q, Board.class)
-                .setParameter(1, username)
-                .setParameter(2, tiile)
-                .setParameter(3, content)
-                .executeUpdate();
     }
 
 
@@ -65,4 +59,18 @@ public class BoardNativeRepository {
                 .setParameter(4, id)
                 .executeUpdate();
     }
+
+
+
+//    @Transactional
+//    public void save(String username, String tiile, String content) {
+//        String q = """
+//                insert into board_tb(username, title, content) values(?,?,?,now())
+//                """;
+//        em.createNativeQuery(q, Board.class)
+//                .setParameter(1, username)
+//                .setParameter(2, tiile)
+//                .setParameter(3, content)
+//                .executeUpdate();
+//    }
 }

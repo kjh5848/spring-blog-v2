@@ -1,9 +1,12 @@
 package shop.mtcoding.blog.board;
 
+import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,6 +16,20 @@ class BoardPersistRepositoryTest {
 
     @Autowired
     private BoardPersistRepository boardpersistRepository;
+
+    @Autowired
+    private EntityManager em;
+
+
+    @Test
+    public void update_test() {
+        int id = 1;
+        String username = "kjh";
+        String title = "수정 1";
+        String content = "수정 내용1";
+
+    }
+
 
     @Test
     public void findeAll_test() {
@@ -51,6 +68,13 @@ class BoardPersistRepositoryTest {
         System.out.println("findById_test/size: " + board7);
 
         // org.assertj.core.api
+    }
+
+    @Test
+    public void delete_test() {
+        int id = 1;
+        boardpersistRepository.deleteById(id);
+
     }
 
 

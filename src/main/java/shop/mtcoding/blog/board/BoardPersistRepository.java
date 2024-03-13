@@ -13,12 +13,33 @@ import java.util.List;
 public class BoardPersistRepository {
     private final EntityManager em; // DI
 
+    @Transactional // 고립성
+    public void update(Integer id, Board board) {
+        // 1. 비영속 객체
+        String q = """
+                UPDATE Board b SET b.username = :username, b.title = :title, b.content = :content WHERE id = :id
+                """;
+        em.createQuery(q)
+                .setParameter("username", board.getUsername())
+                .setParameter("title", board.getTitle())
+                .setParameter("content", board.getContent())
+                .setParameter("id", id)
+                .executeUpdate();
+    }
+
+    @Transactional
+    public void deleteById(Integer id) {
+        em.createQuery("delete from Board b where b.id = :id")
+                .setParameter("id", id)
+                .executeUpdate();
+    }
+
     public Board findById(int id) {
         Board board = em.find(Board.class, id); // (클래스, 프라이머리키)
         return board;
     }
 
-    public List<Board> findAll(){
+    public List<Board> findAll() {
         Query query = em.createQuery("SELECT b FROM Board b  ORDER BY b.id DESC", Board.class); // JPQL에 대한 연습이 필요하다.
         return query.getResultList();
     }

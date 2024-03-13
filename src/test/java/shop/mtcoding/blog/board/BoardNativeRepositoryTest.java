@@ -31,20 +31,20 @@ class BoardNativeRepositoryTest {
 
     @Test
     public void update_test() {
-        int id = 1;
+        int id = 5;
         String username = "kjh";
         String title = "수정 1";
         String content = "수정 내용1";
+        Board board = new Board(username,title,content);
+        boardNativeRepository.update(id,board);
 
-        boardNativeRepository.update(id,username,title,content);
-
-        Board board = boardNativeRepository.findById(id);
+        Board boardUpdate = boardNativeRepository.findById(id);
 
         // org.assertj.core.api
-        assertThat(board.getId()).isEqualTo(id);
-        assertThat(board.getUsername()).isEqualTo(username);
-        assertThat(board.getTitle()).isEqualTo(title);
-        assertThat(board.getContent()).isEqualTo(content);
+        assertThat(boardUpdate.getId()).isEqualTo(id);
+        assertThat(boardUpdate.getUsername()).isEqualTo(username);
+        assertThat(boardUpdate.getTitle()).isEqualTo(title);
+        assertThat(boardUpdate.getContent()).isEqualTo(content);
     }
 
     @Test

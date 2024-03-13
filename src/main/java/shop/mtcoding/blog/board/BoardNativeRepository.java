@@ -48,16 +48,10 @@ public class BoardNativeRepository {
     }
 
     @Transactional
-    public void update(Integer id, String username, String title, String content) {
-        String q = """
-                update board_tb set  username = ? , title =? , content =?   where id = ?;
-                """;
-        em.createNativeQuery(q, Board.class)
-                .setParameter(1, username)
-                .setParameter(2, title)
-                .setParameter(3, content)
-                .setParameter(4, id)
-                .executeUpdate();
+    public Board update(Integer id, Board board) {
+        em.persist(board);
+        //board -> 영속객체
+        return board;
     }
 
 

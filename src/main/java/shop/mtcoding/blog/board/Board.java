@@ -8,13 +8,13 @@ import shop.mtcoding.blog.utill.MyDateUtill;
 import java.sql.Timestamp;
 
 @NoArgsConstructor
-@Entity(name = "board_tb")
-@Table
+@Entity
+@Table(name = "board_tb")
 @Data
 public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String username;
     private String title;

@@ -78,7 +78,7 @@ class BoardNativeRepositoryTest {
     @Test
     public void findeAll_test() {
 
-        List<Board> boardList = boardNativeRepository.findAll();
+        List<Board> boardList = boardpersistRepository.findAll();
         System.out.println("findAll_test/size: " + boardList.size());
 
         boardList.forEach(board ->

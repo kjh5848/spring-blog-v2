@@ -16,31 +16,27 @@ import java.util.List;
 @AllArgsConstructor
 public class BoardController {
 
-    private final BoardNativeRepository boardNativeRepository;
+    private final BoardRepository boardRepository;
 
 
     @PostMapping("/board/{id}/update")
-    public String update(@PathVariable Integer id, String username,String title, String content) {
-        boardNativeRepository.update(id,username,title,content);
+    public String update(@PathVariable Integer id) {
+
         return "redirect:/board/{id}";
     }
 
     @GetMapping("/board/{id}/update-form")
     public String updateForm(@PathVariable Integer id, HttpServletRequest request){
-        Board board = boardNativeRepository.findById(id);
-        request.setAttribute("board", board);
         return "board/update-form";
     }
 
     @PostMapping("/board/{id}/delete")
     public String delete(@PathVariable Integer id) {
-        boardNativeRepository.deleteById(id);
         return "redirect:/";
     }
 
     @PostMapping("/board/save")
-    public String save(String username, String title, String content) {
-        boardNativeRepository.save(username, title, content);
+    public String save() {
 
         return "redirect:/";
     }
@@ -48,8 +44,6 @@ public class BoardController {
 
     @GetMapping("/")
     public String index(HttpServletRequest req) {
-        List<Board> boardList = boardNativeRepository.findAll();
-        req.setAttribute("boardList",boardList);
         return "index";
     }
 
@@ -59,9 +53,9 @@ public class BoardController {
     }
 
     @GetMapping("/board/{id}")
-    public String detail(@PathVariable Integer id, HttpServletRequest request) {
-        Board board = boardNativeRepository.findById(id);
-        request.setAttribute("board", board);
+    public String detail(@PathVariable Integer id, HttpServletRequest req) {
+        Board board = boardRepository.findByIdJoinUser(id);
+        req.setAttribute("board",board);
         return "/board/detail";
     }
 }

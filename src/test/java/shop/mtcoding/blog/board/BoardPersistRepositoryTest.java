@@ -23,11 +23,19 @@ class BoardPersistRepositoryTest {
 
     @Test
     public void update_test() {
-        int id = 1;
-        String username = "kjh";
-        String title = "수정 1";
-        String content = "수정 내용1";
 
+        int id = 1;
+        String username = "love";
+        String title = "제목수정 1";
+        String content = "내용4";
+
+        Board board = boardpersistRepository.findById(id);
+        board.setTitle(title);
+        System.out.println("board_test: " + board);
+        em.flush();
+
+        // org.assertj.core.api
+        assertThat(board.getId()).isEqualTo(id);
     }
 
 
@@ -60,6 +68,7 @@ class BoardPersistRepositoryTest {
         Board board7 = boardpersistRepository.findById(id);
 
         System.out.println("findById_test/size: " + board);
+        System.out.println("findById_test/size: " + board1);
         System.out.println("findById_test/size: " + board2);
         System.out.println("findById_test/size: " + board3);
         System.out.println("findById_test/size: " + board4);

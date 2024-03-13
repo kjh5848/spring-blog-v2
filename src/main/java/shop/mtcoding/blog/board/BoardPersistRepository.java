@@ -14,17 +14,10 @@ public class BoardPersistRepository {
     private final EntityManager em; // DI
 
     @Transactional // 고립성
-    public void update(Integer id, Board board) {
-        // 1. 비영속 객체
-        String q = """
-                UPDATE Board b SET b.username = :username, b.title = :title, b.content = :content WHERE id = :id
-                """;
-        em.createQuery(q)
-                .setParameter("username", board.getUsername())
-                .setParameter("title", board.getTitle())
-                .setParameter("content", board.getContent())
-                .setParameter("id", id)
-                .executeUpdate();
+    public void update(Integer id, BoardRequest.UpdateDTO reqDTO) {
+        Board board = findById(id);
+        board.update(reqDTO);
+        //더티체킹
     }
 
     @Transactional

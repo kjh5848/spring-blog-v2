@@ -3,6 +3,7 @@ package shop.mtcoding.blog.board;
 import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import shop.mtcoding.blog.user.User;
 
 import java.awt.print.Pageable;
@@ -14,6 +15,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BoardRepository {
     private final EntityManager em;
+
+
+
 
     public List<Board> findAllV2() {
         String q1 = """
@@ -55,6 +59,9 @@ public class BoardRepository {
         return board;
     }
 
-    public void save() {
+    //퍼시스트는 내가 만든 로직이 아니기 때문에 테스트 안함
+    @Transactional
+    public void save(Board board) {
+        em.persist(board);
     }
 }

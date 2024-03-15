@@ -16,13 +16,18 @@ import java.util.stream.Collectors;
 public class BoardRepository {
     private final EntityManager em;
 
-
+    @Transactional
+    public void deleteById(Integer id) {
+        em.createQuery("delete from Board b where b.id =:id")
+                .setParameter("id", id)
+                .executeUpdate();
+    }
 
 
     public List<Board> findAllV2() {
         String q1 = """
-               select b from Board b order by b.id desc
-                """;
+                select b from Board b order by b.id desc
+                 """;
         List<Board> boardList = em.createQuery(q1, Board.class)
                 .getResultList();
 
@@ -39,7 +44,6 @@ public class BoardRepository {
 
         return matchedBoards;
     }
-
 
 
     public List<Board> findAll() {

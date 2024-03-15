@@ -24,6 +24,19 @@ class BoardRepositoryTest {
     private EntityManager em;
 
     @Test
+    public void deleteById_test(){
+        // given
+        int id = 1;
+
+
+        // when
+        boardRepository.deleteById(id);
+
+        // then
+        System.out.println("삭제_test: "+ boardRepository.findAllV2().size());
+    }
+
+    @Test
     public void findAllv4_test(){
         // given
         List<Board> boardList = boardRepository.findAllV2();
@@ -38,21 +51,6 @@ class BoardRepositoryTest {
 
     }
 
-    @Test
-    public void _test() {
-        String q = """
-                SELECT b FROM Board b 
-                WHERE b.user.id IN (
-                    SELECT u.id FROM User u 
-                    WHERE u.id IN (:ids)
-                ) ORDER BY b.id DESC
-                """;
-
-        List<Board> matchedBoards = em.createQuery(q, Board.class)
-                .setParameter("ids", Arrays.asList(1, 2, 3))
-                .getResultList();
-        System.out.println("matchedBoards = " + matchedBoards);
-    }
 
     @Test
     public void findAll_V2_test() {

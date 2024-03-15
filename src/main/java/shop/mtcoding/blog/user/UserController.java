@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import shop.mtcoding.blog.board.BoardRepository;
 import shop.mtcoding.blog.board.BoardRequest;
@@ -14,6 +15,16 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final HttpSession session;
+
+    @PostMapping("/user/{id}/update")
+    public String update(@PathVariable int id,UserRequest.UpdateDTO reqDTO) {
+
+
+        userRepository.update(id, reqDTO);
+
+
+        return "redirect:/index";
+    }
 
     @PostMapping("/login")
     public String login(UserRequest.LoginDTO reqDTO) {

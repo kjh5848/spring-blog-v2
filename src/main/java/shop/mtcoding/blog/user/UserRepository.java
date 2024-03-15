@@ -25,4 +25,9 @@ public class UserRepository {
             return null;
         }
     }
+
+
+    public void update(int id, UserRequest.UpdateDTO reqDTO) {
+
+    }
 }

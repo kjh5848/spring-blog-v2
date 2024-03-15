@@ -24,17 +24,19 @@ public class BoardController {
     @PostMapping("/board/{id}/update")
     public String update(@PathVariable Integer id) {
 
-
         return "redirect:/board/{id}";
     }
 
     @GetMapping("/board/{id}/update-form")
-    public String updateForm(@PathVariable Integer id, HttpServletRequest request){
+    public String updateForm(@PathVariable Integer id, HttpServletRequest req) {
+        Board board = boardRepository.findById(id);
+        req.setAttribute("board",board);
         return "board/update-form";
     }
 
     @PostMapping("/board/{id}/delete")
     public String delete(@PathVariable Integer id) {
+        boardRepository.deleteById(id);
         return "redirect:/";
     }
 

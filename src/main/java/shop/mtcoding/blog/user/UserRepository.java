@@ -17,14 +17,10 @@ public class UserRepository {
     }
 
     public User findByUsernameAndPassword(UserRequest.LoginDTO reqDTO) {
-        try {
             return em.createQuery("select u from User u where u.username = :username and u.password = :password", User.class)
                     .setParameter("username", reqDTO.getUsername())
                     .setParameter("password", reqDTO.getPassword())
                     .getSingleResult();
-        } catch (Exception e) {
-            return null;
-        }
     }
 
     public User findById(Integer id) {

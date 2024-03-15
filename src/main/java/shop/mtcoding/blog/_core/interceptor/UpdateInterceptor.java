@@ -4,16 +4,13 @@ package shop.mtcoding.blog._core.interceptor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import shop.mtcoding.blog._core.errors.exception.Exception401;
 import shop.mtcoding.blog._core.errors.exception.Exception403;
 import shop.mtcoding.blog.board.Board;
-import shop.mtcoding.blog.board.BoardRepository;
 import shop.mtcoding.blog.user.User;
 
-public class UpdateIntercepter implements HandlerInterceptor {
+public class UpdateInterceptor implements HandlerInterceptor {
 
 
 
@@ -33,7 +30,7 @@ public class UpdateIntercepter implements HandlerInterceptor {
 
     @Override
     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
-        System.out.println("preHandle............");
+        System.out.println("postHandle............");
         HttpSession session = request.getSession();
 
         User sessionUser = (User) session.getAttribute("sessionUser");

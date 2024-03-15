@@ -23,11 +23,13 @@ public class Board {
     private String title;
     private String content;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private User user;
 
     @CreationTimestamp
     private Timestamp createdAt;
+
+//    private boolean isOwer;
 
     @Builder
     public Board(Integer id, String title, String content, User user, Timestamp createdAt) {
@@ -38,7 +40,8 @@ public class Board {
         this.createdAt = createdAt;
     }
 
-    public void update() {
-
-    }
+//    public Board isOwer(User sessionUser) {
+//        if (sessionUser != null) isOwer = false;
+//        sessionUser.getId() == getUser().getId();
+//    }
 }

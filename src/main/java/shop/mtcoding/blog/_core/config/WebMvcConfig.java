@@ -2,8 +2,9 @@ package shop.mtcoding.blog._core.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import shop.mtcoding.blog._core.interceptor.DeleteInterceptor;
 import shop.mtcoding.blog._core.interceptor.LoginInterceptor;
-import shop.mtcoding.blog._core.interceptor.UpdateIntercepter;
+import shop.mtcoding.blog._core.interceptor.UpdateInterceptor;
 
 @Configuration // IoC
 public class WebMvcConfig implements WebMvcConfigurer {
@@ -13,9 +14,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginInterceptor())
                 .addPathPatterns("/board/**", "/user/**")
                 .excludePathPatterns("/board/{id:\\d+}");
-        registry.addInterceptor((new UpdateIntercepter()))
-                .addPathPatterns("/board/**", "/user/**")
-                .excludePathPatterns("/board/{id:\\d+}");
-
+//        registry.addInterceptor((new UpdateInterceptor()))
+//                .addPathPatterns("/board/{id:\\d+}/**")
+//                .excludePathPatterns("/board/{id:\\d+}");
     }
 }

@@ -10,14 +10,8 @@ public class UserRequest {
     @Data
     public static class UpdateDTO {
         private String password;
-
-        //DTO를 클라이언트로 부터 받아서 PC에 전달하기 위해 사용
-        public User toEntity(User user) {
-            return User.builder()
-                    .password(password)
-                    .build();
-        }
     }
+
 
     @AllArgsConstructor
     @Data
@@ -27,7 +21,7 @@ public class UserRequest {
     }
 
     @Data
-    public static class SaveDTO {
+    public static class JoinDTO {
         private String username;
         private String password;
         private String email;

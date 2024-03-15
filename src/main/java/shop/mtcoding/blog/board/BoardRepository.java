@@ -16,6 +16,16 @@ import java.util.stream.Collectors;
 public class BoardRepository {
     private final EntityManager em;
 
+
+
+
+    @Transactional
+    public void updateById(Integer id, String title, String content) {
+        Board board = findById(id);
+        board.setTitle(title);
+        board.setContent(content);
+    }//터티채킹
+
     @Transactional
     public void deleteById(Integer id) {
         em.createQuery("delete from Board b where b.id =:id")
@@ -65,7 +75,10 @@ public class BoardRepository {
 
     //퍼시스트는 내가 만든 로직이 아니기 때문에 테스트 안함
     @Transactional
-    public void save(Board board) {
+    public Board save(Board board) {
         em.persist(board);
+        return board;
     }
+
+
 }

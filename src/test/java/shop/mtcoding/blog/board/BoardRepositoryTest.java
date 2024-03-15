@@ -24,6 +24,21 @@ class BoardRepositoryTest {
     private EntityManager em;
 
     @Test
+    public void updateById_test(){
+        // given
+        int id = 1;
+        String title = "제목수정1";
+        String content = "내용수정1";
+
+        // when
+        boardRepository.updateById(id,title,content);
+        em.flush();//실제코드에서는 작성할 필요가 없다. 트랜잭션 종료될꺼니까!
+
+        // then
+
+    }
+
+    @Test
     public void deleteById_test(){
         // given
         int id = 1;

@@ -18,11 +18,7 @@ public class UserController {
 
     @PostMapping("/user/{id}/update")
     public String update(@PathVariable int id,UserRequest.UpdateDTO reqDTO) {
-
-
         userRepository.update(id, reqDTO);
-
-
         return "redirect:/index";
     }
 
@@ -33,14 +29,15 @@ public class UserController {
             return "redirect:/login-form";
         }
         session.setAttribute("sessionUser", sessionUser);
-
         return "redirect:/";
     }
 
     @PostMapping("/join")
-    public String join(UserRequest.SaveDTO reqDTO) {
-        userRepository.save(reqDTO.toEntity());
-        return "redirect:/login-form";
+    public String join(UserRequest.JoinDTO reqDTO) {
+        User sessionUser = userRepository.save(reqDTO.toEntity());
+
+        session.setAttribute("sessionUser", sessionUser);
+        return "redirect:/";
     }
 
     @GetMapping("/join-form")
@@ -54,7 +51,7 @@ public class UserController {
     }
 
     @GetMapping("/user/update-form")
-    public String updateForm() {
+    public String updateForm(@PathVariable Integer id) {
         return "/user/update-form";
     }
 

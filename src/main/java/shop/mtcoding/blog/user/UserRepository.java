@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import shop.mtcoding.blog.board.Board;
 
 @Repository
 @RequiredArgsConstructor
@@ -11,8 +12,9 @@ public class UserRepository {
     private final EntityManager em;
 
     @Transactional
-    public void save(User user) {
+    public User save(User user) {
         em.persist(user);
+        return user;
     }
 
     public User findByUsernameAndPassword(UserRequest.LoginDTO reqDTO) {
@@ -29,5 +31,10 @@ public class UserRepository {
 
     public void update(int id, UserRequest.UpdateDTO reqDTO) {
 
+    }
+
+    public User findById(Integer id) {
+        User user = em.find(User.class, id);
+        return user;
     }
 }

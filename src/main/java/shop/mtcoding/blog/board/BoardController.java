@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import shop.mtcoding.blog.user.User;
+import shop.mtcoding.blog.user.UserRequest;
 
 import java.util.List;
 
@@ -22,8 +23,8 @@ public class BoardController {
     private final HttpSession session;
 
     @PostMapping("/board/{id}/update")
-    public String update(@PathVariable Integer id) {
-
+    public String update(@PathVariable Integer id, BoardRequest.UpdateDTO reqDTO) {
+        boardRepository.updateById(id,reqDTO.getTitle(),reqDTO.getContent());
         return "redirect:/board/{id}";
     }
 

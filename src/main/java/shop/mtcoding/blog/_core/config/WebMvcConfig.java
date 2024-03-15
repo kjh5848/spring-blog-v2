@@ -3,6 +3,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import shop.mtcoding.blog._core.interceptor.LoginInterceptor;
+import shop.mtcoding.blog._core.interceptor.UpdateIntercepter;
 
 @Configuration // IoC
 public class WebMvcConfig implements WebMvcConfigurer {
@@ -12,5 +13,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LoginInterceptor())
                 .addPathPatterns("/board/**", "/user/**")
                 .excludePathPatterns("/board/{id:\\d+}");
+        registry.addInterceptor((new UpdateIntercepter()))
+                .addPathPatterns("/board/**", "/user/**")
+                .excludePathPatterns("/board/{id:\\d+}");
+
     }
 }

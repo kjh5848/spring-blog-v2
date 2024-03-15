@@ -1,5 +1,6 @@
 package shop.mtcoding.blog.user;
 
+import jakarta.persistence.EntityManager;
 import jakarta.servlet.http.HttpSession;
 import org.assertj.core.api.Assertions;
 import org.hibernate.query.criteria.JpaQueryStructure;
@@ -17,6 +18,35 @@ class UserRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private EntityManager em;
+
+    @Test
+    public void update_test(){
+        // given
+        int id = 1;
+        String password = "4444";
+        String email = "kjh@nate.com";
+        UserRequest.UpdateDTO reqDTO = new UserRequest.UpdateDTO();
+        reqDTO.setPassword(password);
+        reqDTO.setEmail(email);
+        // when
+        userRepository.update(id,reqDTO);
+        em.flush();
+        // then
+
+    }
+
+    @Test
+    public void findById_test(){
+        // given
+        int id = 1;
+        // when
+        userRepository.findById(id);
+
+        // then
+
+    }
 
     @Test
     public void findByUsername_test(){

@@ -10,6 +10,7 @@ public class UserRequest {
     @Data
     public static class UpdateDTO {
         private String password;
+        private String email;
     }
 
 

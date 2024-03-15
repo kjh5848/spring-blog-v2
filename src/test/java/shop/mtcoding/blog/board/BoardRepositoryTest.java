@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Import;
 import shop.mtcoding.blog.user.User;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 
@@ -20,9 +19,18 @@ class BoardRepositoryTest {
     @Autowired
     private BoardRepository boardRepository;
 
+    @Test
+    public void findAll_test() {
+        // given
+        // when
+        List<Board> boardList = boardRepository.findAll();
+
+        // then
+        boardList.stream().map(board -> board.getUser().getId()).forEach(System.out::println);
+    }
+
     @Autowired
     private EntityManager em;
-
     @Test
     public void updateById_test(){
         // given
@@ -132,22 +140,7 @@ class BoardRepositoryTest {
 
     }
 
-    @Test
-    public void findAll_test() {
-        // given
 
-        // when
-        List<Board> boardList = boardRepository.findAll();
-
-        // then
-        //
-        int[] userIds = boardList.stream().mapToInt(board -> Math.toIntExact(board.getUser().getId())).distinct().toArray();
-        for (int userId : userIds) {
-            System.out.println(userId);
-        }
-//        boardList.stream().map(board -> board.getUser().getId()).forEach(System.out::println);
-
-    }
 
 
     @Test

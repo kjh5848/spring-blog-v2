@@ -12,6 +12,12 @@ import java.util.List;
 public class BoardRepository {
     private final EntityManager em;
 
+
+    public Board findById(Integer id) {
+        Board board = em.find(Board.class, id);
+        return board;
+    }
+
     @Transactional
     public Board save(Board board) {
         em.persist(board);

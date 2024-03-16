@@ -13,7 +13,6 @@ public class UserController {
     private final UserRepository userRepository;
     private final HttpSession session;
 
-
     @PostMapping("/login")
     public String login(UserRequest.LoginDTO reqDTO) {
         User sessionUser = userRepository.findByUsernameAndPassword(reqDTO);

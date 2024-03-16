@@ -1,6 +1,7 @@
 package shop.mtcoding.blog.board;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
@@ -8,24 +9,25 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.sql.Timestamp;
 
 @NoArgsConstructor
-@Entity(name = "board_tb")
-@Table
+@Entity
+@Table(name = "board_tb")
 @Getter
 public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String username;
     private String title;
     private String content;
 
     @CreationTimestamp
     private Timestamp createdAt;
 
-    public Board(String username, String title, String content) {
-        this.username = username;
+    @Builder
+    public Board(Integer id, String title, String content, Timestamp createdAt) {
+        this.id = id;
         this.title = title;
         this.content = content;
+        this.createdAt = createdAt;
     }
 }

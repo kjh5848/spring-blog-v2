@@ -13,8 +13,9 @@ public class BoardRepository {
     private final EntityManager em;
 
     @Transactional
-    public void save(Board board) {
+    public Board save(Board board) {
         em.persist(board);
+        return board;
     }
 
     public List<Board> findAll() {

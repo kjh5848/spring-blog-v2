@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import shop.mtcoding.blog._core.errors.exception.Exception400;
+import shop.mtcoding.blog._core.errors.exception.Exception401;
 
 @RequiredArgsConstructor
 @Controller
@@ -22,16 +24,23 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(UserRequest.LoginDTO reqDTO) {
-        User sessionUser = userRepository.findByUsernameAndPassword(reqDTO);
-        System.out.println("1z = " + sessionUser);
-        session.setAttribute("sessionUser", sessionUser);
+        try {
+            User sessionUser = userRepository.findByUsernameAndPassword(reqDTO);
+            session.setAttribute("sessionUser", sessionUser);
+        } catch (Exception e) {
+            throw new Exception401("아이디 비밀번호가 틀렸습니다.");
+        }
         return "redirect:/";
     }
 
     @PostMapping("/join")
     public String join(UserRequest.SaveDTO reqDTO) {
-        User sessionUser = userRepository.save(reqDTO.toEntity());
-        session.setAttribute("sessionUser", sessionUser);
+        try {
+            User sessionUser = userRepository.save(reqDTO.toEntity());
+            session.setAttribute("sessionUser", sessionUser);
+        } catch (Exception e) {
+            throw new Exception400("동일한 아이디가 존재합니다.");
+        }
 
         return "redirect:/login-form";
     }

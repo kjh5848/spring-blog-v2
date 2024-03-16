@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import shop.mtcoding.blog._core.errors.exception.Exception401;
+import shop.mtcoding.blog._core.errors.exception.Exception403;
 import shop.mtcoding.blog.user.User;
 import java.util.List;
 
@@ -19,12 +21,24 @@ public class BoardController {
 
     @PostMapping("/board/{id}/delete")
     public String delete(@PathVariable Integer id) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        Board board = boardRepository.findById(id);
+        if (sessionUser.getId() == board.getUser().getId()) {
+            throw new Exception403("게시글을 삭제할 권한이 없습니다.~~");
+        }
+
         boardRepository.deleteById(id);
         return "redirect:/";
     }
 
     @PostMapping("/board/{id}/update")
     public String update(@PathVariable Integer id,BoardRequest.UpdateDTO reqDTO) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        Board board = boardRepository.findById(id);
+        if (sessionUser.getId() == board.getUser().getId()) {
+            throw new Exception403("게시글을 수정할 권한이 없습니다.~~");
+        }
+
         boardRepository.updateById(id,reqDTO.getTitle(), reqDTO.getContent());
         return "redirect:/board/" + id;
     }
@@ -40,6 +54,11 @@ public class BoardController {
     @GetMapping("/board/{id}/update-form")
     public String updateForm(@PathVariable Integer id, HttpServletRequest req) {
         Board board = boardRepository.findById(id);
+
+        if (board == null) {
+            throw new Exception401("해당 게시글을 찾을 수 없습니다.");
+        }
+
         req.setAttribute("board", board);
         return "/board/update-form";
     }
@@ -66,8 +85,6 @@ public class BoardController {
 
         boolean isOwner = sessionUser.getId() == board.getUser().getId() ? true : false;
         req.setAttribute("isOwner", isOwner);
-
-
 
         return "board/detail";
     }

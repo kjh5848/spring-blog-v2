@@ -8,12 +8,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @RequiredArgsConstructor
 public class UserRepository {
+
     private final EntityManager em;
+
 
     public User findById(Integer id) {
         User user = em.find(User.class, id);
         return user;
     }
+
 
     @Transactional//더티채킹
     public void updateById(Integer id, String username, String password, String email) {

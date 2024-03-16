@@ -24,6 +24,10 @@ class BoardRepositoryTest {
     @Autowired
     private EntityManager em;
 
+
+
+
+
     @Test
         public void findAll_test(){
             // given

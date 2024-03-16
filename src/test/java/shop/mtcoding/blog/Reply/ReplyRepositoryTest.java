@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Import;
 import shop.mtcoding.blog.board.Board;
 import shop.mtcoding.blog.user.User;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @Import(ReplyRepository.class)
@@ -14,6 +16,20 @@ import static org.junit.jupiter.api.Assertions.*;
 class ReplyRepositoryTest {
     @Autowired
     private ReplyRepository replyRepository;
+
+
+    @Test
+    public void findAll_test() {
+        // given
+
+
+        // when
+        List<Reply> replyList = replyRepository.findAll();
+        System.out.println("replyList_test = " + replyList);
+        // then
+        replyList.forEach(System.out::println);
+
+    }
 
     @Test
     public void save_test() {

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import shop.mtcoding.blog.Reply.Reply;
+import shop.mtcoding.blog.Reply.ReplyRepository;
 import shop.mtcoding.blog._core.errors.exception.Exception401;
 import shop.mtcoding.blog._core.errors.exception.Exception403;
 import shop.mtcoding.blog.user.User;
@@ -17,6 +19,7 @@ import java.util.List;
 public class BoardController {
 
     private final BoardRepository boardRepository;
+    private final ReplyRepository replyRepository;
     private final HttpSession session;
 
     @PostMapping("/board/{id}/delete")
@@ -85,6 +88,9 @@ public class BoardController {
 
         boolean isOwner = sessionUser.getId() == board.getUser().getId() ? true : false;
         req.setAttribute("isOwner", isOwner);
+
+        List<Reply> replyList =  replyRepository.findAll();
+        req.setAttribute("replyList", replyList);
 
         return "board/detail";
     }

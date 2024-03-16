@@ -15,6 +15,13 @@ public class BoardController {
 
     private final BoardRepository boardRepository;
 
+    @PostMapping("/board/{id}/delete")
+    public String delete(@PathVariable Integer id) {
+        boardRepository.deleteById(id);
+
+        return "redirect:/";
+    }
+
     @PostMapping("/board/{id}/update")
     public String update(@PathVariable Integer id,BoardRequest.UpdateDTO reqDTO) {
         boardRepository.updateById(id,reqDTO.getTitle(), reqDTO.getContent());

@@ -1,8 +1,6 @@
 package shop.mtcoding.blog.user;
 
-import jakarta.el.ELManager;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.Transient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +9,19 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserRepository {
     private final EntityManager em;
+
+    public User findById(Integer id) {
+        User user = em.find(User.class, id);
+        return user;
+    }
+
+    @Transactional//더티채킹
+    public void updateById(Integer id, String username, String password, String email) {
+        User user = findById(id);
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEmail(email);
+    }
 
 
     @Transactional//내가 만든게 아니라서 테스트 안함.

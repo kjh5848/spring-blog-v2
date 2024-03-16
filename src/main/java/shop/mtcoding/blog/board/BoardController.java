@@ -60,9 +60,14 @@ public class BoardController {
 
     @GetMapping("/board/{id}")
     public String detail(@PathVariable Integer id,HttpServletRequest req) {
-
+        User sessionUser = (User) session.getAttribute("sessionUser");
         Board board = boardRepository.findById(id);
         req.setAttribute("board", board);
+
+        boolean isOwner = sessionUser.getId() == board.getUser().getId() ? true : false;
+        req.setAttribute("isOwner", isOwner);
+
+
 
         return "board/detail";
     }

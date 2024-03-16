@@ -8,6 +8,20 @@ public class UserRequest {
 
     @AllArgsConstructor
     @Data
+    public static class UpdateDTO {
+        private String username;
+        private String password;
+        private String email;
+
+        public User toEntity() {
+            return new User(username, password, email);
+
+        }
+    }
+
+
+    @AllArgsConstructor
+    @Data
     public static class LoginDTO {
         private String username;
         private String password;

@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import shop.mtcoding.blog.user.User;
 
 public class BoardRequest {
+
+
     @Data
     public static class UpdateDTO {
         private String title;

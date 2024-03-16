@@ -13,6 +13,13 @@ public class UserController {
     private final UserRepository userRepository;
     private final HttpSession session;
 
+    @PostMapping("/user/update")
+    public String update(UserRequest.UpdateDTO reqDTO) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        userRepository.updateById(sessionUser.getId(), reqDTO.getUsername(), reqDTO.getPassword(), reqDTO.getEmail());
+        return "redirect:/";
+    }
+
     @PostMapping("/login")
     public String login(UserRequest.LoginDTO reqDTO) {
         User sessionUser = userRepository.findByUsernameAndPassword(reqDTO);
@@ -41,6 +48,9 @@ public class UserController {
 
     @GetMapping("/user/update-form")
     public String updateForm() {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        userRepository.findById(sessionUser.getId());
+
         return "/user/update-form";
     }
 

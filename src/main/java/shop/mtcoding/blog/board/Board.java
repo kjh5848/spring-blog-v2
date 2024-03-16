@@ -28,6 +28,7 @@ public class Board {
     @CreationTimestamp
     private Timestamp createdAt;
 
+
     @Builder
     public Board(Integer id, String title, String content, User user, Timestamp createdAt) {
         this.id = id;
@@ -36,4 +37,7 @@ public class Board {
         this.user = user;
         this.createdAt = createdAt;
     }
+
+
+
 }

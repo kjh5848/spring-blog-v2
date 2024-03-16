@@ -12,6 +12,12 @@ import java.util.List;
 public class BoardRepository {
     private final EntityManager em;
 
+    @Transactional//더티채킹
+    public void updateById(Integer id, String title, String content) {
+        Board board = findById(id);
+        board.setTitle(title);
+        board.setContent(content);
+    }
 
     public Board findById(Integer id) {
         Board board = em.find(Board.class, id);

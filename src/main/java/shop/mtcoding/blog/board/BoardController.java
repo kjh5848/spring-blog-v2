@@ -15,6 +15,12 @@ public class BoardController {
 
     private final BoardRepository boardRepository;
 
+    @PostMapping("/board/{id}/update")
+    public String update(@PathVariable Integer id,BoardRequest.UpdateDTO reqDTO) {
+        boardRepository.updateById(id,reqDTO.getTitle(), reqDTO.getContent());
+        return "redirect:/board/" + id;
+    }
+
     @PostMapping("/board/save")
     public String sava(BoardRequest.SaveDTO reqDTO) {
         boardRepository.save(reqDTO.toEntity());
@@ -22,10 +28,18 @@ public class BoardController {
     }
 
 
+    @GetMapping("/board/{id}/update-form")
+    public String updateForm(@PathVariable Integer id, HttpServletRequest req) {
+        Board board = boardRepository.findById(id);
+        req.setAttribute("board", board);
+        return "/board/update-form";
+    }
+
     @GetMapping("/")
     public String index(HttpServletRequest req) {
+
         List<Board> boardList = boardRepository.findAll();
-        req.setAttribute("boardList",boardList);
+        req.setAttribute("boardList", boardList);
         return "index";
     }
 

@@ -12,6 +12,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class BoardController {
+
     private final BoardRepository boardRepository;
 
     @PostMapping("/board/save")

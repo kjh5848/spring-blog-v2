@@ -1,15 +1,23 @@
 package shop.mtcoding.blog.user;
 
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+@RequiredArgsConstructor
 @Controller
 public class UserController {
 
-    @PostMapping("/join")
-    public String join() {
+    private final UserRepository userRepository;
+    private HttpSession session;
 
+
+    @PostMapping("/join")
+    public String join(UserRequest.SaveDTO reqDTO) {
+        System.out.println("reqDTO = " + reqDTO);
+        User user = userRepository.save(reqDTO.toEntity());
         return "redirect:/";
     }
 

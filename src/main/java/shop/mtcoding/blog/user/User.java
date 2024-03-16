@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
+import shop.mtcoding.blog.board.Board;
 
 import java.sql.Timestamp;
 
@@ -25,15 +26,14 @@ public class User {
     private String password;
     private String email;
 
+
+
     @CreationTimestamp
     private Timestamp createdAt;
 
-    @Builder
-    public User(Integer id, String username, String password, String email, Timestamp createdAt) {
-        this.id = id;
+    public User(String username, String password, String email) {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.createdAt = createdAt;
     }
 }

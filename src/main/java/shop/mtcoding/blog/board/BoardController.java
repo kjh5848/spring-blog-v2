@@ -1,12 +1,13 @@
 package shop.mtcoding.blog.board;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import shop.mtcoding.blog.user.User;
 import java.util.List;
 
 @Controller
@@ -14,11 +15,11 @@ import java.util.List;
 public class BoardController {
 
     private final BoardRepository boardRepository;
+    private final HttpSession session;
 
     @PostMapping("/board/{id}/delete")
     public String delete(@PathVariable Integer id) {
         boardRepository.deleteById(id);
-
         return "redirect:/";
     }
 
@@ -30,7 +31,8 @@ public class BoardController {
 
     @PostMapping("/board/save")
     public String sava(BoardRequest.SaveDTO reqDTO) {
-        boardRepository.save(reqDTO.toEntity());
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        boardRepository.save(reqDTO.toEntity(sessionUser));
         return "redirect:/";
     }
 

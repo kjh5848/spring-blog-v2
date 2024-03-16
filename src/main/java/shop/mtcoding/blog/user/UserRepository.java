@@ -18,4 +18,12 @@ public class UserRepository {
         em.persist(user);
         return user;
     }
+
+    public User findByUsernameAndPassword(UserRequest.LoginDTO reqDTO) {
+        return em.createQuery("select u from User u  where u.username = :username and u.password = :password", User.class)
+                .setParameter("username", reqDTO.getUsername())
+                .setParameter("password", reqDTO.getPassword())
+                .getSingleResult();
+    }
+
 }

@@ -11,14 +11,23 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class UserController {
 
     private final UserRepository userRepository;
-    private HttpSession session;
+    private final HttpSession session;
 
+
+    @PostMapping("/login")
+    public String login(UserRequest.LoginDTO reqDTO) {
+        User sessionUser = userRepository.findByUsernameAndPassword(reqDTO);
+        System.out.println("1z = " + sessionUser);
+        session.setAttribute("sessionUser", sessionUser);
+        return "redirect:/";
+    }
 
     @PostMapping("/join")
     public String join(UserRequest.SaveDTO reqDTO) {
-        System.out.println("reqDTO = " + reqDTO);
-        User user = userRepository.save(reqDTO.toEntity());
-        return "redirect:/";
+        User sessionUser = userRepository.save(reqDTO.toEntity());
+        session.setAttribute("sessionUser", sessionUser);
+
+        return "redirect:/login-form";
     }
 
     @GetMapping("/join-form")
@@ -38,6 +47,7 @@ public class UserController {
 
     @GetMapping("/logout")
     public String logout() {
+        session.invalidate();
         return "redirect:/";
     }
 }

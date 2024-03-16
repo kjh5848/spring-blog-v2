@@ -1,9 +1,18 @@
 package shop.mtcoding.blog.user;
 
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 public class UserRequest {
+
+    @AllArgsConstructor
+    @Data
+    public static class LoginDTO {
+        private String username;
+        private String password;
+
+    }
 
     @Data
     public static class SaveDTO {

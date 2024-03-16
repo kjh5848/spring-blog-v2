@@ -17,19 +17,22 @@ class ReplyRepositoryTest {
     @Autowired
     private ReplyRepository replyRepository;
 
-
     @Test
-    public void findAll_test() {
+    public void findById_test() {
         // given
-
-
+        int id = 1;
         // when
-        List<Reply> replyList = replyRepository.findAll();
+        List<Reply> replyList = replyRepository.findById(id);
         System.out.println("replyList_test = " + replyList);
+        List<Integer> replyIds = replyList.stream().map(reply -> reply.getUser().getId()).toList();
+        for (Integer replyId : replyIds) {
+
+        }
+        System.out.println("replyIds_test = " + replyIds);
         // then
-        replyList.forEach(System.out::println);
 
     }
+
 
     @Test
     public void save_test() {

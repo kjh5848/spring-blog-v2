@@ -10,6 +10,8 @@ import shop.mtcoding.blog.board.Board;
 import shop.mtcoding.blog.board.BoardRepository;
 import shop.mtcoding.blog.user.User;
 
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 public class ReplyController {
@@ -18,12 +20,21 @@ public class ReplyController {
     private final HttpSession session;
     private final BoardRepository boardRepository;
 
+    @PostMapping("/reply/{id}/delete")
+    public String delete(@PathVariable Integer id) {
+        Reply reply = replyRepository.findById(id);
+        System.out.println(reply);
+        replyRepository.deleteById(id);
+
+        return "redirect:/board/" + reply.getBoard().getId();
+    }
+
     @PostMapping("/reply/save")
-    public String save(@RequestParam("boardId") Integer id, ReplyRequest.SaveDTO reqDTO) {
+    public String save(@RequestParam Integer boardId, ReplyRequest.SaveDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        Board board = boardRepository.findById(id);
+        Board board = boardRepository.findById(boardId);
         replyRepository.save(reqDTO.toEntity(sessionUser, board));
-        return "redirect:/board/" + id;
+        return "redirect:/board/" + boardId;
     }
 
 }

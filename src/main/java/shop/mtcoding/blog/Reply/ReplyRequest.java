@@ -9,13 +9,13 @@ public class ReplyRequest {
     @AllArgsConstructor
     @Data
     public static class SaveDTO {
-        private String content;
+        private String comment;
 
         public Reply toEntity(User user, Board board) {
             return Reply.builder()
                     .user(user)
                     .board(board)
-                    .content(content)
+                    .comment(comment)
                     .build();
 
         }

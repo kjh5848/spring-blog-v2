@@ -12,6 +12,7 @@ import shop.mtcoding.blog.Reply.ReplyRepository;
 import shop.mtcoding.blog._core.errors.exception.Exception401;
 import shop.mtcoding.blog._core.errors.exception.Exception403;
 import shop.mtcoding.blog.user.User;
+
 import java.util.List;
 
 @Controller
@@ -35,14 +36,14 @@ public class BoardController {
     }
 
     @PostMapping("/board/{id}/update")
-    public String update(@PathVariable Integer id,BoardRequest.UpdateDTO reqDTO) {
+    public String update(@PathVariable Integer id, BoardRequest.UpdateDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         Board board = boardRepository.findById(id);
         if (sessionUser.getId() == board.getUser().getId()) {
             throw new Exception403("게시글을 수정할 권한이 없습니다.~~");
         }
 
-        boardRepository.updateById(id,reqDTO.getTitle(), reqDTO.getContent());
+        boardRepository.updateById(id, reqDTO.getTitle(), reqDTO.getContent());
         return "redirect:/board/" + id;
     }
 
@@ -81,16 +82,30 @@ public class BoardController {
     }
 
     @GetMapping("/board/{id}")
-    public String detail(@PathVariable Integer id,HttpServletRequest req) {
+    public String detail(@PathVariable Integer id, HttpServletRequest req) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         Board board = boardRepository.findById(id);
         req.setAttribute("board", board);
 
-        boolean isOwner = sessionUser.getId() == board.getUser().getId() ? true : false;
-        req.setAttribute("isOwner", isOwner);
+        boolean boardIsOwner = sessionUser.getId() == board.getUser().getId() ? true : false;
+        req.setAttribute("boardIsOwner", boardIsOwner);
 
-        List<Reply> replyList =  replyRepository.findAll();
+
+        List<Reply> replyList = replyRepository.findByReplyId(id);
         req.setAttribute("replyList", replyList);
+
+
+        Integer userId = replyList.stream()
+                .mapToInt(reply -> reply.getUser().getId())
+                .filter(ids -> ids == sessionUser.getId())
+                .findFirst() // 첫 번째 일치하는 값 찾기
+                .orElse(0); // 만약 일치하는 값이 없으면 0 반환
+
+        // 댓글의 주인 여부
+        boolean replyIsOwner = sessionUser.getId() == userId ? true : false;
+        System.out.println("userId = " + userId);
+        System.out.println("sessionUser = " + sessionUser.getId());
+        req.setAttribute("replyIsOwner", replyIsOwner);
 
         return "board/detail";
     }

@@ -12,7 +12,7 @@ values
     (3, '제목4', '내용4', now());
 
 
-insert into reply_tb(user_id, board_id, content, created_at)
+insert into reply_tb(user_id, board_id, comment, created_at)
 values
     (1, 1,'1번이 제목1에 남김', now()),
     (1, 2,'1번이 제목2에 남김', now()),

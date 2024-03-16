@@ -2,8 +2,7 @@
 
 <div class="container p-5">
 
-    {{#isOwner}}
-
+    {{#boardIsOwner}}
         <!-- 수정삭제버튼 -->
         <div class="d-flex justify-content-end">
             <a href="/board/{{board.id}}/update-form">
@@ -16,7 +15,7 @@
         <div class="d-flex justify-content-end">
             <b>작성자</b> : {{board.user.username}}
         </div>
-    {{/isOwner}}
+    {{/boardIsOwner}}
 
     <!-- 게시글내용 -->
     <div>
@@ -47,17 +46,17 @@
         <div class="list-group">
             <!-- 댓글아이템 -->
             {{#replyList}}
-
-            <div class="list-group-item d-flex justify-content-between align-items-center">
-                <div class="d-flex">
-                    <div class="px-1 me-1 bg-primary text-white rounded">{{user.username}}</div>
-                    <div>{{content}}</div>
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <div class="d-flex">
+                        <div class="px-1 me-1 bg-primary text-white rounded">{{user.username}}</div>
+                        <div>{{comment}}</div>
+                    </div>
+                    {{#replyIsOwner}}
+                        <form action="/reply/{{id}}/delete" method="post">
+                            <button class="btn">🗑</button>
+                        </form>
+                    {{/replyIsOwner}}
                 </div>
-
-                <form action="/reply/{{id}}/delete" method="post">
-                    <button class="btn">🗑</button>
-                </form>
-            </div>
             {{/replyList}}
 
         </div>

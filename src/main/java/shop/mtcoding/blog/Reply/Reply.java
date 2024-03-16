@@ -19,7 +19,7 @@ public class Reply {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String content;
+    private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Board board;
@@ -31,9 +31,9 @@ public class Reply {
     private Timestamp createdAt;
 
     @Builder
-    public Reply(Integer id, String content, Board board, User user, Timestamp createdAt) {
+    public Reply(Integer id, String comment, Board board, User user, Timestamp createdAt) {
         this.id = id;
-        this.content = content;
+        this.comment = comment;
         this.board = board;
         this.user = user;
         this.createdAt = createdAt;

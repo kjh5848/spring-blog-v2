@@ -19,36 +19,28 @@ import shop.mtcoding.blog.board.BoardRequest;
 @RequiredArgsConstructor
 public class UserController {
 
+    private final UserService userService;
     private final UserRepository userRepository;
     private final HttpSession session;
 
     @PostMapping("/user/update")
     public String update(UserRequest.UpdateDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        userRepository.update(sessionUser.getId(), reqDTO);
+        User sessionUserUpdate = userService.회원수정(reqDTO, sessionUser.getId());
+        session.setAttribute("sessionUser", sessionUserUpdate);
         return "redirect:/";
     }
 
     @PostMapping("/login")
     public String login(UserRequest.LoginDTO reqDTO) {
-        try {
-            User sessionUser = userRepository.findByUsernameAndPassword(reqDTO);
-            session.setAttribute("sessionUser", sessionUser);
-        } catch (EmptyResultDataAccessException e) {
-            throw new Exception401("아이디, 비밀번호 틀렸어요.");
-        }
+        User sessionUser = userService.로그인(reqDTO);
+        session.setAttribute("sessionUser", sessionUser);
         return "redirect:/";
     }
 
     @PostMapping("/join")
     public String join(UserRequest.JoinDTO reqDTO) {
-        try {
-            User sessionUser = userRepository.save(reqDTO.toEntity());
-            session.setAttribute("sessionUser", sessionUser);
-        } catch (DataIntegrityViolationException e) {
-            throw new Exception400("동일한 아이디가 존재합니다.");
-        }
-
+        userService.회원가입(reqDTO);
         return "redirect:/";
     }
 
@@ -65,8 +57,7 @@ public class UserController {
     @GetMapping("/user/update-form")
     public String updateForm(HttpServletRequest req) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-
-        User user = userRepository.findById(sessionUser.getId());
+        User user = userService.회원조회(sessionUser.getId());
         req.setAttribute("user", user);
         return "/user/update-form";
     }

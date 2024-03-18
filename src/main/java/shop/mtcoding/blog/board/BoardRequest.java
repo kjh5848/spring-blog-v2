@@ -10,14 +10,6 @@ public class BoardRequest {
     public static class UpdateDTO {
         private String title;
         private String content;
-
-        //DTO를 클라이언트로 부터 받아서 PC에 전달하기 위해 사용
-        public Board toEntity() {
-            return Board.builder()
-                    .title(title)
-                    .content(content)
-                    .build();
-        }
     }
 
 

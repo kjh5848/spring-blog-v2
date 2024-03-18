@@ -27,7 +27,7 @@ public class BoardSerivce {
             }
         }
 
-        board.setOwer(isOwner);
+        board.setOwner(isOwner);
 
         return board;
     }
@@ -63,8 +63,8 @@ public class BoardSerivce {
         if (sessionUserId != board.getUser().getId()) {
             throw new Exception403("게시글을 수정할 권한이 없습니다.");
         }
-        board.setTitle(board.getTitle());
-        board.setContent(board.getContent());
+        board.setTitle(reqDTO.getTitle());
+        board.setContent(reqDTO.getContent());
     }
 
     @Transactional

@@ -30,7 +30,7 @@ public class Board {
     private Timestamp createdAt;
 
     @Transient
-    private boolean isOwer;
+    private boolean isOwner;
 
     @Builder
     public Board(Integer id, String title, String content, User user, Timestamp createdAt) {

@@ -24,8 +24,9 @@ public class UserService {
     public User 회원수정(UserRequest.UpdateDTO reqDTO, int sessionUserId) {
         User user = userJPARepository.findById(sessionUserId)
                 .orElseThrow(() -> new Exception404("회원정보를 찾을 수 없습니다."));
-        user.setUsername(user.getUsername());
-        user.setPassword(user.getPassword());
+        user.setPassword(reqDTO.getPassword());
+        user.setEmail(reqDTO.getEmail());
+
         return user;
     }
 

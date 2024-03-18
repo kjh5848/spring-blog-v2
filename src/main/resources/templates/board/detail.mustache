@@ -3,7 +3,7 @@
 <div class="container p-5">
 
     <!-- 수정삭제버튼 -->
-    {{#isOwenr}}
+    {{#board.isOwenr}}
         <div class="d-flex justify-content-end">
             <a href="/board/{{board.id}}/update-form">
                 <button class="btn btn-warning me-1">수정</button>
@@ -12,7 +12,7 @@
                 <button class="btn btn-danger">삭제</button>
             </form>
         </div>
-    {{/isOwenr}}
+    {{/board.isOwenr}}
     <div class="d-flex justify-content-end">
         <b>작성자</b> : {{board.user.username}}
     </div>

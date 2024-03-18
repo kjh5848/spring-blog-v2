@@ -29,7 +29,8 @@ public class Board {
     @CreationTimestamp
     private Timestamp createdAt;
 
-//    private boolean isOwer;
+    @Transient
+    private boolean isOwer;
 
     @Builder
     public Board(Integer id, String title, String content, User user, Timestamp createdAt) {

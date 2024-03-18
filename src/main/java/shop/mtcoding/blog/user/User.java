@@ -31,10 +31,11 @@ public class User {
     private Timestamp createdAt;
 
     @Builder
-    public User(String username, String password, String email) {
+    public User(Integer id, String username, String password, String email, Timestamp createdAt) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
+        this.createdAt = createdAt;
     }
-
 }

@@ -28,7 +28,12 @@ public class UserRequest {
         private String email;
 
         public User toEntity() {
-            return new User(username, password, email);
+            return User.builder()
+                    .username(username)
+                    .password(password)
+                    .email(email)
+                    .build();
+
         }
     }
 }

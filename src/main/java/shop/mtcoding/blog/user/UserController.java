@@ -19,6 +19,7 @@ import shop.mtcoding.blog.board.BoardRequest;
 @RequiredArgsConstructor
 public class UserController {
 
+    private final UserService userService;
     private final UserRepository userRepository;
     private final HttpSession session;
 
@@ -31,24 +32,14 @@ public class UserController {
 
     @PostMapping("/login")
     public String login(UserRequest.LoginDTO reqDTO) {
-        try {
-            User sessionUser = userRepository.findByUsernameAndPassword(reqDTO);
-            session.setAttribute("sessionUser", sessionUser);
-        } catch (EmptyResultDataAccessException e) {
-            throw new Exception401("아이디, 비밀번호 틀렸어요.");
-        }
+        User sessionUser = userService.로그인(reqDTO);
+        session.setAttribute("sessionUser", sessionUser);
         return "redirect:/";
     }
 
     @PostMapping("/join")
     public String join(UserRequest.JoinDTO reqDTO) {
-        try {
-            User sessionUser = userRepository.save(reqDTO.toEntity());
-            session.setAttribute("sessionUser", sessionUser);
-        } catch (DataIntegrityViolationException e) {
-            throw new Exception400("동일한 아이디가 존재합니다.");
-        }
-
+        userService.회원가입(reqDTO);
         return "redirect:/";
     }
 

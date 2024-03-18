@@ -8,11 +8,14 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 
+import java.util.Optional;
+
 //자동 컴포넌트 스캔이 된다.
 public interface UserJPARepository extends JpaRepository<User, Integer> {
 
-    @Query("select u from User u where u.username=:username AND u.password = :password")
-    User findByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
+//    @Query("select u from User u where u.username=:username AND u.password = :password")
+    Optional<User> findByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
+    Optional<User> findByUsername(@Param("username") String username);
 }
 
 

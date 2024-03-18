@@ -26,7 +26,7 @@ class BoardJPARepositoryTest {
     private EntityManager em;
 
     @Test
-    public void deleteById_test(){
+    public void deleteById_test() {
         // given
         int id = 1;
 
@@ -48,19 +48,30 @@ class BoardJPARepositoryTest {
         Page<Board> boardPG = boardJPARepository.findAll(pageable);
         System.out.println("boardPG _test = " + boardPG);
 
-        List<Board> boardsWithUser = new ArrayList<>();
+        // Board 객체와 연관된 User 객체를 함께 JSON으로 포함시키기
+        List<Board> boardsWithUserDTO = new ArrayList<>();
         for (Board board : boardPG) {
+            Board boardWithUserDTO = new Board();
+            boardWithUserDTO.setId(board.getId());
+            boardWithUserDTO.setTitle(board.getTitle());
+
             User user = board.getUser();
-            boardsWithUser.add(board);
+            if (user != null) {
+                User userDTO = new User();
+                userDTO.setId(user.getId());
+                userDTO.setUsername(user.getUsername());
+                userDTO.setEmail(user.getEmail());
+
+
+                boardWithUserDTO.setUser(userDTO);
+            }
+            boardsWithUserDTO.add(boardWithUserDTO);
         }
 
         // then
         ObjectMapper om = new ObjectMapper();
-        String json = om.writeValueAsString(boardPG);
+        String json = om.writeValueAsString(boardsWithUserDTO);
         System.out.println("json = " + json);
-//        ObjectMapper om = new ObjectMapper();
-//        String json = om.writeValueAsString(boardPG);
-//        System.out.println("json _test = " + json);
     }
 
     @Test
@@ -75,21 +86,21 @@ class BoardJPARepositoryTest {
 
         System.out.println("boardList = " + boardList);
     }
-    
+
     @Test
-    public void findByJoinUser_test(){
+    public void findByJoinUser_test() {
         // given
         int id = 1;
-                
+
         // when
-        Board board  = boardJPARepository.findByJoinUser(id);
-    
+        Board board = boardJPARepository.findByJoinUser(id);
+
         // then
         System.out.println("board.getTitle() = " + board.getTitle());
     }
 
     @Test
-    public void findById_test(){
+    public void findById_test() {
         // given
         int id = 1;
         // when
@@ -105,7 +116,7 @@ class BoardJPARepositoryTest {
     }
 
     @Test
-    public void save_test(){
+    public void save_test() {
         // given
         User user = User.builder()
                 .id(1)

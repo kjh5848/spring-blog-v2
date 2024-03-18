@@ -1,35 +1,37 @@
 package shop.mtcoding.blog.board;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import shop.mtcoding.blog.user.User;
-import shop.mtcoding.blog.utill.MyDateUtill;
 
 import java.sql.Timestamp;
 
 @NoArgsConstructor
-@Entity
-@Table(name = "board_tb")
 @Data
+@Table(name = "board_tb")
+@Entity
 public class Board {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String title;
     private String content;
 
+    //@JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private User user;
+    private User user; // db -> user_id
 
-    @CreationTimestamp
+    @CreationTimestamp // pc -> db (날짜주입)
     private Timestamp createdAt;
 
-//    private boolean isOwer;
+    @Transient // 테이블 생성이 안됨
+    private boolean isOwner;
+
 
     @Builder
     public Board(Integer id, String title, String content, User user, Timestamp createdAt) {
@@ -39,9 +41,4 @@ public class Board {
         this.user = user;
         this.createdAt = createdAt;
     }
-
-//    public Board isOwer(User sessionUser) {
-//        if (sessionUser != null) isOwer = false;
-//        sessionUser.getId() == getUser().getId();
-//    }
 }

@@ -3,6 +3,7 @@ package shop.mtcoding.blog.Reply;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import shop.mtcoding.blog.user.User;
@@ -19,5 +20,13 @@ public class ReplyController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         replyService.댓글쓰기(reqDTO, sessionUser);
         return "redirect:/board/" + reqDTO.getBoardId();
+    }
+
+    @PostMapping("/reply/{replyId}/delete")
+    public String delete(@PathVariable Integer replyId) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        int boardId = replyService.댓글삭제(replyId, sessionUser.getId());
+
+        return "redirect:/board/" + boardId;
     }
 }

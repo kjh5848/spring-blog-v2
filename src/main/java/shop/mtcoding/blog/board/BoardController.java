@@ -57,6 +57,9 @@ public class BoardController {
     @GetMapping("/board/save-form")
     public String saveForm() {
         List<Board> boardList = boardNativeRepository.findAll();//머지 테스트
+        List<Board> boardList1 = boardNativeRepository.findAll();//머지 테스트
+        List<Board> boardList2 = boardNativeRepository.findAll();//머지 테스트
+        List<Board> boardList3 = boardNativeRepository.findAll();//머지 테스트
         return "/board/save-form";
     }
 

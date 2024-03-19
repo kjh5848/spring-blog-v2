@@ -69,15 +69,24 @@ public class BoardService {
         Board board = boardJPARepository.findByJoinUser(boardId)
                 .orElseThrow(() -> new Exception404("게시글을 찾을 수 없습니다"));
 
-        boolean isOwner = false;
-        if(sessionUser != null){
-            if(sessionUser.getId() == board.getUser().getId()){
-                isOwner = true;
+        boolean isBoardOwner = false;
+        if (sessionUser != null) {
+            if (sessionUser.getId() == board.getUser().getId()) {
+                isBoardOwner = true;
             }
         }
-        board.setOwner(isOwner);
+        board.setBoardOwner(isBoardOwner);
 
-
+        //댓글 주인 확인
+        board.getReplies().forEach(reply -> {
+            boolean isReplyOwner = false;
+            if (sessionUser != null) {
+                if (reply.getUser().getId() == sessionUser.getId()) {
+                    isReplyOwner = true;
+                    reply.setReplyOwner(isReplyOwner);
+                }
+            }
+        });
 
         return board;
     }

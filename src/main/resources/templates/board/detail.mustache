@@ -3,7 +3,7 @@
 <div class="container p-5">
 
     <!-- 수정삭제버튼 -->
-    {{#board.isOwner}}
+    {{#board.boardOwner}}
         <div class="d-flex justify-content-end">
             <a href="/board/{{board.id}}/update-form">
                 <button class="btn btn-warning me-1">수정</button>
@@ -12,7 +12,7 @@
                 <button class="btn btn-danger">삭제</button>
             </form>
         </div>
-    {{/board.isOwner}}
+    {{/board.boardOwner}}
     <div class="d-flex justify-content-end">
         <b>작성자</b> : {{board.user.username}}
     </div>
@@ -47,14 +47,16 @@
                 <!-- 댓글아이템 -->
                 <div class="list-group-item d-flex justify-content-between align-items-center">
                     <div class="d-flex">
-<!--                        댓글을 적는 유저도 다시 레이지 로딩이 일어난다.-->
+                        <!--                        댓글을 적는 유저도 다시 레이지 로딩이 일어난다.-->
                         <div class="px-1 me-1 bg-primary text-white rounded">{{user.username}}</div>
-<!--                        코멘트도 레이지 로딩이 일어난다.-->
+                        <!--                        코멘트도 레이지 로딩이 일어난다.-->
                         <div>{{comment}}</div>
                     </div>
-                    <form action="/reply/1/delete" method="post">
-                        <button class="btn">🗑</button>
-                    </form>
+                    {{#replyOwner}}
+                        <form action="/reply/1/delete" method="post">
+                            <button class="btn">🗑</button>
+                        </form>
+                    {{/replyOwner}}
                 </div>
             {{/board.replies}}
         </div>

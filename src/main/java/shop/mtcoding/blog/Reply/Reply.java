@@ -28,6 +28,9 @@ public class Reply {
     @ManyToOne(fetch = FetchType.LAZY)
     private Board board;
 
+    @Transient
+    private boolean isReplyOwner;
+
     @CreationTimestamp // pc -> db (날짜주입)
     private Timestamp createdAt;
 

@@ -65,7 +65,6 @@ public class BoardController {
     public String detail(@PathVariable Integer id, HttpServletRequest req) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         Board board = boardSerivce.글상세보기(id, sessionUser);
-
         req.setAttribute("board", board);
 
         return "/board/detail";

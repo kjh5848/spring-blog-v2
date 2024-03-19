@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import shop.mtcoding.blog.Reply.Reply;
 import shop.mtcoding.blog._core.errors.exception.Exception403;
 import shop.mtcoding.blog._core.errors.exception.Exception404;
 import shop.mtcoding.blog.user.User;
@@ -19,22 +20,22 @@ public class BoardSerivce {
 
     public Board 글상세보기(int boardId, User sessionUser) {
         Board board = boardJPARepository.findByJoinuser(boardId)
-                .orElseThrow(() -> new Exception404("게시글을 찾을 수 없습니다."));
-        boolean isOwner = false;
-        if(sessionUser != null){
-            if(sessionUser.getId() == board.getUser().getId()){
-                isOwner = true;
-            }
-        }
+                .orElseThrow(() -> new Exception404("게시글을 찾을 수 없습니다"));
 
-        board.setOwner(isOwner);
+        board.checkBoardOwner(sessionUser);
+
+        //댓글 주인 확인
+        board.getReplies().forEach(reply -> {
+            reply.checkReplyOwner(sessionUser);
+        });
+
 
         return board;
     }
 
     public List<Board> 목록조회() {
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
-        return  boardJPARepository.findAll(sort);
+        return boardJPARepository.findAll(sort);
     }
 
 

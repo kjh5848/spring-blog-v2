@@ -3,13 +3,14 @@ package shop.mtcoding.blog.board;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import shop.mtcoding.blog.Reply.Reply;
 import shop.mtcoding.blog.user.User;
-import shop.mtcoding.blog.utill.MyDateUtill;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor
 @Entity
@@ -29,8 +30,12 @@ public class Board {
     @CreationTimestamp
     private Timestamp createdAt;
 
+    @OrderBy("id DESC ")
+    @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    private List<Reply> replies = new ArrayList<>();
+
     @Transient
-    private boolean isOwner;
+    private boolean isBoardOwner;
 
     @Builder
     public Board(Integer id, String title, String content, User user, Timestamp createdAt) {
@@ -40,6 +45,17 @@ public class Board {
         this.user = user;
         this.createdAt = createdAt;
     }
+
+    //게시글의 주인여부 체크
+    public void checkBoardOwner(User sessionUser) {
+        if (sessionUser != null) {
+            if (sessionUser.getId() == getUser().getId()) {
+                isBoardOwner = true;
+                setBoardOwner(isBoardOwner);
+            }
+        }
+    }
+
 
 //    public Board isOwer(User sessionUser) {
 //        if (sessionUser != null) isOwer = false;

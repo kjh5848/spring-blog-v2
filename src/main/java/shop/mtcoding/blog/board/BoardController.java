@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.Mapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import shop.mtcoding.blog.user.User;
 
 import java.util.List;
 
@@ -55,6 +56,7 @@ public class BoardController {
 
     @GetMapping("/board/save-form")
     public String saveForm() {
+        List<Board> boardList = boardNativeRepository.findAll();//머지 테스트
         return "/board/save-form";
     }
 

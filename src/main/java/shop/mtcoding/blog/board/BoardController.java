@@ -64,6 +64,11 @@ public class BoardController {
     public String detail(@PathVariable Integer id, HttpServletRequest request) {
         Board board = boardNativeRepository.findById(id);
         request.setAttribute("board", board);
+        request.setAttribute("board2", board);
+        request.setAttribute("board3", board);
+        request.setAttribute("board4", board);
+        request.setAttribute("board5", board);
+        request.setAttribute("board6", board);
         return "/board/detail";
     }
 }

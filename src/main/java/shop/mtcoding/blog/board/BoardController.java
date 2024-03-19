@@ -57,9 +57,9 @@ public class BoardController {
     @GetMapping("/board/save-form")
     public String saveForm() {
         List<Board> boardList = boardNativeRepository.findAll();//머지 테스트
-        List<Board> boardList1 = boardNativeRepository.findAll();//머지 테스트
-        List<Board> boardList2 = boardNativeRepository.findAll();//머지 테스트
-        List<Board> boardList3 = boardNativeRepository.findAll();//머지 테스트
+        List<Board> boardList11231 = boardNativeRepository.findAll();//머지 테스트
+        List<Board> boardList2123 = boardNativeRepository.findAll();//머지 테스트
+        List<Board> boardList3123 = boardNativeRepository.findAll();//머지 테스트
         return "/board/save-form";
     }
 
@@ -67,7 +67,7 @@ public class BoardController {
     public String detail(@PathVariable Integer id, HttpServletRequest request) {
         Board board = boardNativeRepository.findById(id);
         request.setAttribute("board", board);
-        request.setAttribute("board2", board);
+        request.setAttribute("board1232", board);
         request.setAttribute("board3", board);
         request.setAttribute("board4", board);
         request.setAttribute("board5", board);

@@ -93,10 +93,22 @@ class BoardJPARepositoryTest {
         int id = 1;
 
         // when
-        Optional<Board> board = boardJPARepository.findByJoinUser(id);
+        Board board = boardJPARepository.findByJoinUser(id).get();
 
         // then
-        System.out.println("board.getTitle() = " + board);
+        System.out.println("board.getTitle() = " + board.getTitle());
+    }
+
+    @Test
+    public void findByJoinUserAndReplies_test() {
+        // given
+        int id = 4;
+
+        // when
+        Board board = boardJPARepository.findByJoinUserAndReplies(id).get();
+
+        // then
+        System.out.println("board.getTitle() = " + board.getTitle());
     }
 
     @Test

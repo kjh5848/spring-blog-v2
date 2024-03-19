@@ -56,10 +56,8 @@ public class BoardController {
 
     @GetMapping("/board/save-form")
     public String saveForm() {
-        List<Board> boardList = boardNativeRepository.findAll();//머지 테스트
-        List<Board> boardList11231 = boardNativeRepository.findAll();//머지 테스트
-        List<Board> boardList2123 = boardNativeRepository.findAll();//머지 테스트
-        List<Board> boardList3123 = boardNativeRepository.findAll();//머지 테스트
+        List<Board> boardList123 = boardNativeRepository.findAll();//머지 테스트
+
         return "/board/save-form";
     }
 
@@ -68,10 +66,11 @@ public class BoardController {
         Board board = boardNativeRepository.findById(id);
         request.setAttribute("board", board);
         request.setAttribute("board1232", board);
-        request.setAttribute("board3", board);
-        request.setAttribute("board4", board);
-        request.setAttribute("board5", board);
-        request.setAttribute("board6", board);
+        request.setAttribute("board1233", board);
+        request.setAttribute("board1234", board);
+        request.setAttribute("board1235", board);
+        request.setAttribute("board1236", board);
+
         return "/board/detail";
     }
 }

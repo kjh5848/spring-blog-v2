@@ -32,7 +32,7 @@ public class Board {
     @CreationTimestamp // pc -> db (날짜주입)
     private Timestamp createdAt;
 
-
+    @OrderBy("id desc")//정렬
     @OneToMany(mappedBy = "board", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)//엔티티 객체의 변수명 == FK의 주인
     private List<Reply> replies = new ArrayList<>();// 댓글이 없을때 null이면 터지기 때문에 new를 해 놓음.
 

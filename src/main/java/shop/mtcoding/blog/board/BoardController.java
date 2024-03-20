@@ -19,6 +19,19 @@ public class BoardController {
     private final BoardService boardService;
     private final HttpSession session;
 
+    @GetMapping("/test/page")
+    public  String page() {
+
+        return "page";
+    }
+
+    @CrossOrigin(origins = "http://127.0.0.1:5500")//도메인을 허용하는 어노테이션
+    @GetMapping("/test")
+    public @ResponseBody String test() {
+
+        return "ok";
+    }
+
     @PostMapping("/board/{id}/update")
     public String update(@PathVariable Integer id, BoardRequest.UpdateDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");

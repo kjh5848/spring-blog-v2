@@ -15,7 +15,8 @@ import java.util.List;
 public class BoardService {
     private final BoardJPARepository boardJPARepository;
 
-    public void 글삭제(Integer boardId, Integer sessionUserId) {
+    @Transactional
+    public Board 글삭제(Integer boardId, Integer sessionUserId) {
         Board board = boardJPARepository.findById(boardId)
                 .orElseThrow(() -> new Exception404("게시글을 찾을 수 없습니다."));
 
@@ -23,6 +24,7 @@ public class BoardService {
             throw new Exception403("게시글을 삭제할 권한이 없습니다.");
         }
         boardJPARepository.deleteById(boardId);
+        return board;
     }
 
 
@@ -39,7 +41,7 @@ public class BoardService {
     }
 
     @Transactional
-    public void updateById(int boardId, int sessionUserId, BoardRequest.UpdateDTO reqDTO) {
+    public Board updateById(int boardId, int sessionUserId, BoardRequest.UpdateDTO reqDTO) {
         //1. 조회 및 예외처리
         Board board = boardJPARepository.findById(boardId)
                 .orElseThrow(() -> new Exception404("게시글을 찾을 수 없습니다."));
@@ -51,11 +53,12 @@ public class BoardService {
         // 3. 글수정
         board.setTitle(reqDTO.getTitle());
         board.setContent(reqDTO.getContent());
+        return board;
     }//더티체킹
 
     @Transactional
-    public void save(BoardRequest.SaveDTO reqDTO, User sessionUser) {
-        boardJPARepository.save(reqDTO.toEntity(sessionUser));
+    public Board save(BoardRequest.SaveDTO reqDTO, User sessionUser) {
+        return boardJPARepository.save(reqDTO.toEntity(sessionUser));
     }
 
 

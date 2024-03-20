@@ -17,12 +17,13 @@ public class ReplyService {
 
 
     @Transactional
-    public void 댓글쓰기(ReplyRequest.SaveDTO reqDTO, User sessionUser) {
+    public ReplyResponse.DTO 댓글쓰기(ReplyRequest.SaveDTO reqDTO, User sessionUser) {
         Board board = boardJPARepository.findById(reqDTO.getBoardId())
                 .orElseThrow(() -> new Exception404("해당 게시글을 찾을 수 없습니다."));
 
         Reply reply = reqDTO.toEntity(sessionUser, board);
-        replyJPARepository.save(reply);
+
+        return new ReplyResponse.DTO(replyJPARepository.save(reply));
     }
 
     @Transactional

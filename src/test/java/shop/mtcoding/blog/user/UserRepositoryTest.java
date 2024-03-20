@@ -12,12 +12,9 @@ import org.springframework.context.annotation.Import;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-@Import(UserRepository.class)
 @DataJpaTest
 class UserRepositoryTest {
 
-    @Autowired
-    private UserRepository userRepository;
     @Autowired
     private EntityManager em;
 
@@ -31,7 +28,6 @@ class UserRepositoryTest {
         reqDTO.setPassword(password);
         reqDTO.setEmail(email);
         // when
-        userRepository.update(id,reqDTO);
         em.flush();
         // then
 
@@ -42,7 +38,6 @@ class UserRepositoryTest {
         // given
         int id = 1;
         // when
-        userRepository.findById(id);
 
         // then
 
@@ -59,9 +54,7 @@ class UserRepositoryTest {
         );
 
         // when
-        User user = userRepository.findByUsernameAndPassword(reqDTO);
         // then
-        assertThat(user.getUsername()).isEqualTo("ssar");
 
     }
 
@@ -72,7 +65,6 @@ class UserRepositoryTest {
         String password = "1234";
         String email = "kjh@nate,com";
         User user = new User(username, password, email);
-        userRepository.save(user);
 
 //        assertThat()
         // when

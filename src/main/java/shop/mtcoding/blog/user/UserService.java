@@ -15,9 +15,10 @@ import java.util.Optional;
 public class UserService {
     private final UserJPARepository userJPARepository;
 
-    public User 회원조회(int sessionUserId) {
-        return userJPARepository.findById(sessionUserId)
+    public UserResponse.DTO 회원조회(int sessionUserId) {
+        User user = userJPARepository.findById(sessionUserId)
                 .orElseThrow(() -> new Exception404("회원정보를 찾을 수 없습니다."));
+        return new UserResponse.DTO(user);//엔티티 생명종료
     }
 
     @Transactional
@@ -31,12 +32,12 @@ public class UserService {
     }
 
     @Transactional
-    public void 회원가입(UserRequest.JoinDTO reqDTO) {
+    public UserResponse.JoinDTO 회원가입(UserRequest.JoinDTO reqDTO) {
         Optional<User> userOP = userJPARepository.findByUsername(reqDTO.getUsername());
         if (userOP.isPresent()) {
             throw new Exception400("중복된 유저네입입니다.");
         }
-        userJPARepository.save(reqDTO.toEntity());
+       return new UserResponse.JoinDTO(userJPARepository.save(reqDTO.toEntity()));
     }
 
     public User 로그인(UserRequest.LoginDTO reqDTO) {

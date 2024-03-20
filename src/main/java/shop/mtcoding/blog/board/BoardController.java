@@ -19,31 +19,15 @@ public class BoardController {
     private final BoardService boardService;
     private final HttpSession session;
 
-    @GetMapping("/test/page")
-    public  String page() {
-
-        return "page";
-    }
-
-    @CrossOrigin(origins = "http://127.0.0.1:5500")//도메인을 허용하는 어노테이션
-    @GetMapping("/test")
-    public @ResponseBody String test() {
-
-        return "ok";
-    }
+    //TODO: 글조회 API 필요
+    //TODO: 글목록조회 API 필요
+    //TODO: 글상세보기 API 필요
 
     @PostMapping("/board/{id}/update")
     public String update(@PathVariable Integer id, BoardRequest.UpdateDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         boardService.updateById(id, sessionUser.getId(), reqDTO);
         return "redirect:/board/{id}";
-    }
-
-    @GetMapping("/board/{id}/update-form")
-    public String updateForm(@PathVariable Integer id, HttpServletRequest req) {
-        Board board = boardService.글조회(id);
-        req.setAttribute("board", board);
-        return "board/update-form";
     }
 
     @RequestMapping(value = "/board/{id}/delete", method = {RequestMethod.GET, RequestMethod.POST})
@@ -61,27 +45,4 @@ public class BoardController {
         return "redirect:/";
     }
 
-
-    @GetMapping("/")
-    public String index(HttpServletRequest req) {
-        List<Board> boardList = boardService.글목록조회();
-        req.setAttribute("boardList",boardList);
-        return "index";
-    }
-
-    @GetMapping("/board/save-form")
-    public String saveForm() {
-        return "/board/save-form";
-    }
-
-//SSR은 DTO를 굳이 만들 필요가 없다.
-    // 필요한 데이터만 랜더링해서 클라이언트에게 전달할 것이니까!
-    @GetMapping("/board/{id}")
-    public String detail(@PathVariable Integer id, HttpServletRequest request) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        Board board = boardService.글상세보기(id, sessionUser);
-
-        request.setAttribute("board", board);
-        return "board/detail";
-    }
 }

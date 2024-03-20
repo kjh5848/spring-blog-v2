@@ -14,13 +14,7 @@ public class UserController {
     private final UserService userService;
     private final HttpSession session;
 
-    @GetMapping("/user/update-form")
-    public String updateForm(HttpServletRequest req) {
-        User sessionUser = (User) session.getAttribute("sessionUser");
-        User user = userService.회원조회(sessionUser.getId());
-        req.setAttribute("user", user);
-        return "/user/update-form";
-    }
+    //TODO: 회원정보 조회 API 필요
 
     @PostMapping("/user/update")
     public String update(UserRequest.UpdateDTO reqDTO,HttpServletRequest req) {
@@ -41,16 +35,6 @@ public class UserController {
     public String join(UserRequest.JoinDTO reqDTO) {
         userService.회원가입(reqDTO);
         return "redirect:/";
-    }
-
-    @GetMapping("/join-form")
-    public String joinForm() {
-        return "/user/join-form";
-    }
-
-    @GetMapping("/login-form")
-    public String loginForm() {
-        return "/user/login-form";
     }
 
 

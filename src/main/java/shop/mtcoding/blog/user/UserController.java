@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @Controller
 @RequiredArgsConstructor
@@ -14,9 +15,9 @@ public class UserController {
     private final UserService userService;
     private final HttpSession session;
 
-    //TODO: 회원정보 조회 API 필요
+    //TODO: 회원정보 조회 API 필요 -> @GetMapping("/api/users/{id}") public String userinfo() {return "redirect:/";}
 
-    @PostMapping("/user/update")
+    @PutMapping("/api/users/{id}")
     public String update(UserRequest.UpdateDTO reqDTO,HttpServletRequest req) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         User sessionUpdate = userService.회원수정(reqDTO,sessionUser.getId());
@@ -36,7 +37,6 @@ public class UserController {
         userService.회원가입(reqDTO);
         return "redirect:/";
     }
-
 
     @GetMapping("/logout")
     public String logout() {

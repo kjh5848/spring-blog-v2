@@ -1,6 +1,8 @@
 package shop.mtcoding.blog.board;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import shop.mtcoding.blog.Reply.Reply;
 import shop.mtcoding.blog.user.User;
 
@@ -8,6 +10,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BoardResponse {
+
+
+    @Data
+    public static class CountDTO {
+        private Integer id;
+        private String title;
+        private String content;
+        private Integer userId;
+        private Integer replyCount;
+
+        public CountDTO(Integer id, String title, String content, Integer userId, Integer replyCount) {
+            this.id = id;
+            this.title = title;
+            this.content = content;
+            this.userId = userId;
+            this.replyCount = replyCount;
+        }
+    }
 
     @Data
     public static class DetailDTO {
@@ -17,6 +37,7 @@ public class BoardResponse {
         private Integer userId;// 안줘도 되지만 주면 id로 주인여부를 if로 분기해서 확인할 수 있다.
         private String username; // 게시글 작성자 이름
         private boolean isOwner;
+
         public DetailDTO(Board board,User sessionUser) {
             this.id = board.getId();
             this.title = board.getTitle();
@@ -43,11 +64,12 @@ public class BoardResponse {
             private String username; // 댓글 작성자 이름
             private boolean isOwner;
 
+            //
             public ReplyDTO(Reply reply,User sessionUser) {
                 this.id = reply.getId(); // lazy loading 발동
                 this.comment = reply.getComment();
                 this.userId = reply.getUser().getId();// lazy loading 발동
-                this.username = reply.getUser().getUsername();// lazy loading 발동
+                this.username = reply.getUser().getUsername();
                 this.isOwner = false;
                 if (sessionUser != null) {
                     if (sessionUser.getId() == userId) {

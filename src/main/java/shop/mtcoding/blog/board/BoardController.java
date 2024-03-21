@@ -17,15 +17,15 @@ public class BoardController {
     private final HttpSession session;
 
     @GetMapping("/")
-    public ResponseEntity<?> main() {
-        List<BoardResponse.MainDTO> respDTO = boardSerivce.목록조회();
+    public ResponseEntity<?> main(@RequestParam(defaultValue = "0") int page) {
+        List<BoardResponse.MainDTO> respDTO = boardSerivce.목록조회(page);
         return ResponseEntity.ok(new ApiUtil(respDTO));
     }
 
     @GetMapping("/api/boards/{id}/detail")
-    public ResponseEntity<?> detail(@PathVariable Integer id) {
+    public ResponseEntity<?> detail(@RequestParam(defaultValue = "0") int page,@PathVariable Integer id) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        BoardResponse.DetailDTO respDTO = boardSerivce.글상세보기(id, sessionUser);
+        BoardResponse.DetailDTO respDTO = boardSerivce.글상세보기(page,id, sessionUser);
         return ResponseEntity.ok(new ApiUtil(respDTO));
     }
 

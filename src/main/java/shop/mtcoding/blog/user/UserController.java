@@ -26,7 +26,9 @@ public class UserController {
         User sessionUser = (User) session.getAttribute("sessionUser");
         User newSessionUser = userService.회원수정(reqDTO, sessionUser.getId());
         session.setAttribute("sessionUser", newSessionUser);
-        return ResponseEntity.ok(new ApiUtil(newSessionUser));
+
+        UserResponse.DTO respDTO = new UserResponse.DTO(newSessionUser);
+        return ResponseEntity.ok(new ApiUtil(respDTO));
     }
 
     @PostMapping("/login")

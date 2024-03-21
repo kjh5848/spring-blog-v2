@@ -1,9 +1,13 @@
 package shop.mtcoding.blog.board;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import shop.mtcoding.blog.Reply.Reply;
+import shop.mtcoding.blog.Reply.ReplyJPARepository;
 import shop.mtcoding.blog._core.errors.exception.Exception403;
 import shop.mtcoding.blog._core.errors.exception.Exception404;
 import shop.mtcoding.blog.user.User;
@@ -14,19 +18,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardSerivce {
     private final BoardJPARepository boardJPARepository;
+    private final ReplyJPARepository replyJPARepository;
 
 
-    public BoardResponse.DetailDTO 글상세보기(int boardId, User sessionUser) {
-        Board board = boardJPARepository.findByJoinuser(boardId)
+    public BoardResponse.DetailDTO 글상세보기(int boardId, int page, User sessionUser) {
+        Board board = boardJPARepository.findByJoinUser(boardId)
                 .orElseThrow(() -> new Exception404("게시글을 찾을 수 없습니다"));
-
 
         return new BoardResponse.DetailDTO(board,sessionUser);
     }
 
-    public List<BoardResponse.MainDTO> 목록조회() {
+    public List<BoardResponse.MainDTO> 목록조회(int page) {
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
-        return boardJPARepository.findAll(sort).stream().map(BoardResponse.MainDTO::new).toList();
+        Pageable pageable = PageRequest.of(page,3,sort);
+        return boardJPARepository.findAll(pageable).stream().map(BoardResponse.MainDTO::new).toList();
     }
 
 

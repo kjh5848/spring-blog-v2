@@ -16,18 +16,12 @@ public class BoardSerivce {
     private final BoardJPARepository boardJPARepository;
 
 
-    public Board 글상세보기(int boardId, User sessionUser) {
+    public BoardResponse.DetailDTO 글상세보기(int boardId, User sessionUser) {
         Board board = boardJPARepository.findByJoinuser(boardId)
                 .orElseThrow(() -> new Exception404("게시글을 찾을 수 없습니다"));
 
-        board.checkBoardOwner(sessionUser);
 
-        //댓글 주인 확인
-        board.getReplies().forEach(reply -> {
-            reply.checkReplyOwner(sessionUser);
-        });
-
-        return board;
+        return new BoardResponse.DetailDTO(board,sessionUser);
     }
 
     public List<BoardResponse.MainDTO> 목록조회() {

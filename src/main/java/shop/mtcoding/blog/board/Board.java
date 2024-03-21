@@ -46,19 +46,4 @@ public class Board {
         this.createdAt = createdAt;
     }
 
-    //게시글의 주인여부 체크
-    public void checkBoardOwner(User sessionUser) {
-        if (sessionUser != null) {
-            if (sessionUser.getId() == getUser().getId()) {
-                isBoardOwner = true;
-                setBoardOwner(isBoardOwner);
-            }
-        }
-    }
-
-
-//    public Board isOwer(User sessionUser) {
-//        if (sessionUser != null) isOwer = false;
-//        sessionUser.getId() == getUser().getId();
-//    }
 }

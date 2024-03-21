@@ -11,22 +11,14 @@ import java.util.List;
 
 public class BoardResponse {
 
-
+    @AllArgsConstructor
     @Data
     public static class CountDTO {
         private Integer id;
         private String title;
         private String content;
         private Integer userId;
-        private Integer replyCount;
-
-        public CountDTO(Integer id, String title, String content, Integer userId, Integer replyCount) {
-            this.id = id;
-            this.title = title;
-            this.content = content;
-            this.userId = userId;
-            this.replyCount = replyCount;
-        }
+        private Long replyCount;
     }
 
     @Data

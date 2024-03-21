@@ -13,8 +13,6 @@ public interface BoardJPARepository extends JpaRepository<Board, Integer> {
     @Query("select b from Board b join fetch b.user u where b.id = :id")
     Optional<Board> findByJoinUser(@Param("id") int id);
 
-
-
-    @Query(value = "SELECT new com.example.dto.BoardDTO(bt.id, bt.title, bt.content, bt.user_id, (SELECT COUNT(id) FROM reply_tb WHERE board_id = bt.id)) FROM board_tb bt", nativeQuery = true)
-    List<BoardResponse.CountDTO> findAllWithReplyCount();
+    @Query("select new shop.mtcoding.blog.board.BoardResponse$CountDTO(b.id, b.title, b.content, b.user.id, (select count(r.id) from Reply r where r.board.id = b.id)) from Board b")
+    List<BoardResponse.CountDTO> findBoardWithReplyCount();
 }

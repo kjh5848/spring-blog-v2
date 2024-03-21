@@ -33,14 +33,23 @@ class BoardSerivceTest {
         // then
 
     }
+    @Test
+    public void findAllWithReplyCount_test() {
+        // given
 
+        // when
+        List<BoardResponse.CountDTO> respDTO = boardJPARepository.findBoardWithReplyCount();
+
+        // then
+        System.out.println(respDTO);
+    }
     @Test
     public void find_test(){
         // given
-        int id = 1;
+
 
         // when
-        List<BoardResponse.CountDTO> boardCountDTOList = boardJPARepository.findAllWithReplyCount();
+        List<BoardResponse.CountDTO> boardCountDTOList = boardJPARepository.findBoardWithReplyCount();
         System.out.println("boardCountDTOList = " + boardCountDTOList);
         // then
 

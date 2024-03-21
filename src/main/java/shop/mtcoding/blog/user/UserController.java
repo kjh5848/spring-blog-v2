@@ -16,15 +16,23 @@ public class UserController {
     private final HttpSession session;
 
     //TODO: 회원정보 조회 API 필요 -> @GetMapping("/api/users/{id}") public String userinfo() {return "redirect:/";}
+    @GetMapping("/api/users/{id}")
+    public ResponseEntity<?> userinfo(@PathVariable int id) {
+        UserResponse.DTO respDTO =  userService.회원조회(id);
+        return ResponseEntity.ok(new ApiUtil(respDTO));
+    }
+
 
     //{id}관리자인 경우에 필요하다.
     //외부에서 주소를 이해하기 좋다.
-    @PutMapping("/api/users/{id}")
-    public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody UserRequest.UpdateDTO reqDTO, HttpServletRequest req) {
+    @PostMapping("/api/users/{id}")
+    public ResponseEntity<?> update(@RequestBody UserRequest.UpdateDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
         User newSessionUser = userService.회원수정(reqDTO, sessionUser.getId());
-        req.setAttribute("sessionUser", newSessionUser);
-        return ResponseEntity.ok(new ApiUtil(newSessionUser));
+        session.setAttribute("sessionUser", newSessionUser);
+
+        UserResponse.DTO respDTO = new UserResponse.DTO(newSessionUser);
+        return ResponseEntity.ok(new ApiUtil(respDTO));
     }
 
     @PostMapping("/login")
@@ -36,7 +44,8 @@ public class UserController {
 
     @PostMapping("/join")
     public ResponseEntity<?> join(@RequestBody UserRequest.JoinDTO reqDTO) {
-        return ResponseEntity.ok(new ApiUtil(userService.회원가입(reqDTO)));
+        UserResponse.DTO respDTO = userService.회원가입(reqDTO);
+        return ResponseEntity.ok(new ApiUtil(respDTO));
     }
 
     @GetMapping("/logout")

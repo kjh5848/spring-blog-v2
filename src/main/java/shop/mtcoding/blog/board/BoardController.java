@@ -21,26 +21,45 @@ public class BoardController {
     private final BoardService boardService;
     private final HttpSession session;
 
-    //TODO: 글조회 API 필요 -> @GetMapping("/")
-    //TODO: 글목록조회 API 필요 -> @GetMapping("/api/boards/{id}/detail")
-    //TODO: 글상세보기 API 필요 -> @GetMapping("/api/boards/{id}")
+    @GetMapping("/")
+    public ResponseEntity<?> main(@RequestParam(defaultValue = "0") int page) {
+        List<BoardResponse.MainDTO> respDTO = boardService.글목록조회(page);
+        return ResponseEntity.ok(new ApiUtil(respDTO));
+    }
+
+    @GetMapping("/api/boards/{id}/detail")
+    public ResponseEntity<?> detail(@PathVariable Integer id) {
+        User sessionUser = (User) session.getAttribute("sessionUser");
+        BoardResponse.DetailDTO respDTO = boardService.글상세보기(id, sessionUser);
+        return ResponseEntity.ok(new ApiUtil(respDTO));
+    }
+
+    @GetMapping("/api/boards/{id}")
+    public ResponseEntity<?>  updateForm(@PathVariable Integer id) {
+        BoardResponse.DTO respDTO = boardService.글조회(id);
+        System.out.println("respDTO = " + respDTO);
+        return ResponseEntity.ok(new ApiUtil(respDTO));
+    }
 
     @PutMapping("/api/boards/{id}")
     public ResponseEntity<?> update(@PathVariable Integer id, @RequestBody BoardRequest.UpdateDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        return ResponseEntity.ok(new ApiUtil(boardService.updateById(id, sessionUser.getId(), reqDTO)));
+        BoardResponse.DTO respDTO =  boardService.updateById(id, sessionUser.getId(), reqDTO);
+        return ResponseEntity.ok(new ApiUtil(respDTO));
     }
 
     @DeleteMapping( "/api/boards/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        return ResponseEntity.ok(new ApiUtil(boardService.글삭제(id, sessionUser.getId())));
+        boardService.글삭제(id, sessionUser.getId());
+        return ResponseEntity.ok(new ApiUtil(null));
     }
 
     @PostMapping("/api/boards")
     public ResponseEntity<?> save(@RequestBody BoardRequest.SaveDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        return ResponseEntity.ok(new ApiUtil(boardService.save(reqDTO, sessionUser)));
+        BoardResponse.DTO  respDTO= boardService.save(reqDTO, sessionUser);
+        return ResponseEntity.ok(new ApiUtil(respDTO));
     }
 
 }

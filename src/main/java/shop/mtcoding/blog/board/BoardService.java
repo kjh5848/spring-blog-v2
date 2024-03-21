@@ -1,6 +1,8 @@
 package shop.mtcoding.blog.board;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +30,7 @@ public class BoardService {
     }
 
 
-    public Board 글조회(int boardId) {
+    public BoardResponse.DTO 글조회(int boardId) {
         //1. 조회 및 예외처리
         Board board = boardJPARepository.findById(boardId)
                 .orElseThrow(() -> new Exception404("해당 게시글을 찾을 수 없습니다."));
@@ -37,11 +39,11 @@ public class BoardService {
 //        if (sessionUserId != board.getUser().getId()) {
 //            throw new Exception403("게시글을 수정페이지로 이동할 권한이 없습니다.");
 //        }
-        return board;
+        return new BoardResponse.DTO(board);
     }
 
     @Transactional
-    public Board updateById(int boardId, int sessionUserId, BoardRequest.UpdateDTO reqDTO) {
+    public BoardResponse.DTO updateById(int boardId, int sessionUserId, BoardRequest.UpdateDTO reqDTO) {
         //1. 조회 및 예외처리
         Board board = boardJPARepository.findById(boardId)
                 .orElseThrow(() -> new Exception404("게시글을 찾을 수 없습니다."));
@@ -53,46 +55,30 @@ public class BoardService {
         // 3. 글수정
         board.setTitle(reqDTO.getTitle());
         board.setContent(reqDTO.getContent());
-        return board;
+        return new BoardResponse.DTO(board);
     }//더티체킹
 
+
     @Transactional
-    public Board save(BoardRequest.SaveDTO reqDTO, User sessionUser) {
-        return boardJPARepository.save(reqDTO.toEntity(sessionUser));
+    public BoardResponse.DTO save(BoardRequest.SaveDTO reqDTO, User sessionUser) {
+        Board board = boardJPARepository.save(reqDTO.toEntity(sessionUser));
+        return new BoardResponse.DTO(board);
     }
 
 
-    public List<Board> 글목록조회() {
+    public List<BoardResponse.MainDTO> 글목록조회(int page) {
         Sort sort = Sort.by(Sort.Direction.DESC, "id");
-        return boardJPARepository.findAll(sort);
+        Pageable pageable = PageRequest.of(page, 3, sort);
+        return boardJPARepository.findAll(pageable).stream().map(BoardResponse.MainDTO::new).toList();
     }
 
     // board, isOwner
-    public Board 글상세보기(int boardId, User sessionUser) {
+    public BoardResponse.DetailDTO 글상세보기(int boardId, User sessionUser) {
         Board board = boardJPARepository.findByJoinUser(boardId)
                 .orElseThrow(() -> new Exception404("게시글을 찾을 수 없습니다"));
 
-        boolean isBoardOwner = false;
-        if (sessionUser != null) {
-            if (sessionUser.getId() == board.getUser().getId()) {
-                isBoardOwner = true;
-            }
-        }
-        board.setBoardOwner(isBoardOwner);
-
-        //댓글 주인 확인
-        board.getReplies().forEach(reply -> {
-            boolean isReplyOwner = false;
-            if (sessionUser != null) {
-                if (reply.getUser().getId() == sessionUser.getId()) {
-                    isReplyOwner = true;
-                    reply.setReplyOwner(isReplyOwner);
-                }
-            }
-        });
-
         //댓글 정렬 스트림 솔티드
 
-        return board;
+        return new BoardResponse.DetailDTO(board,sessionUser);
     }
 }

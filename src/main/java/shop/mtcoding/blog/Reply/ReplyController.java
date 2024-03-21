@@ -18,12 +18,14 @@ public class ReplyController {
     @PostMapping("/api/replies")
     public ResponseEntity<?> save(@RequestBody ReplyRequest.SaveDTO reqDTO) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        return ResponseEntity.ok(new ApiUtil(replyService.댓글쓰기(reqDTO, sessionUser)));
+        ReplyResponse.DTO respDTO = replyService.댓글쓰기(reqDTO, sessionUser);
+        return ResponseEntity.ok(new ApiUtil(respDTO));
     }
 
     @DeleteMapping("/aps/replies/{id}")
     public ResponseEntity<?> delete(@PathVariable Integer id) {
         User sessionUser = (User) session.getAttribute("sessionUser");
-        return ResponseEntity.ok(new ApiUtil(replyService.댓글삭제(id, sessionUser.getId())));
+        replyService.댓글삭제(id, sessionUser.getId());
+        return ResponseEntity.ok(new ApiUtil(null));
     }
 }
